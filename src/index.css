@@ -1,0 +1,102 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Space+Grotesk:wght@400;700;900&family=JetBrains+Mono:wght@400;550;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", "Space Grotesk", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Custom Professional Mood Colors: Solid Swiss, high contrast white with dark accents */
+  --color-sage-50: #ffffff;       /* Pure bone background */
+  --color-sage-100: #f5f5f7;      /* Clean background grid */
+  --color-sage-200: #111111;      /* Crisp bold outline lines */
+  --color-sage-700: #000000;      /* Absolute black buttons */
+  --color-sage-800: #222222;      /* Off-black text info */
+  --color-sage-950: #000000;      /* Heavy display onyx */
+
+  /* Custom Personal Mood Colors: Pitch black deep space with neon-orange gold accents */
+  --color-obsidian-50: #fcfcfc;
+  --color-obsidian-900: #0a0a0c;  /* Deep dark card modules */
+  --color-obsidian-950: #000000;  /* Pure solid back canvas */
+
+  /* Remapping teal keys to target the design template's high-contrast Gold Yellow (#FFD600) */
+  --color-teal-50: #fffdf0;
+  --color-teal-100: #fffbeb;
+  --color-teal-200: #fef08a;
+  --color-teal-300: #fde047;
+  --color-teal-400: #ffd600;      /* CORE DESIGN HIGH CONTRAST ACCENT YELLOW */
+  --color-teal-500: #ffd600;      /* CORE DESIGN HIGH CONTRAST ACCENT YELLOW */
+  --color-teal-600: #e0ac00;
+  --color-teal-700: #b88500;
+  --color-teal-800: #916100;
+  --color-teal-950: #000000;
+
+  /* Remapping amber keys to coordinate with high-contrast accent gold yellow */
+  --color-amber-400: #ffd600;
+  --color-amber-500: #ffa100;
+
+  /* Modifying radius properties to convert layout elements into bold, solid structural forms */
+  --radius-3xl: 4px;
+  --radius-2xl: 2px;
+  --radius-xl: 0px;
+  --radius-lg: 0px;
+  --radius-md: 0px;
+  --radius-sm: 0px;
+}
+
+/* Base style resets and customizations mapping 'Bold Typography' rules */
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, .font-display, .hero-text {
+  font-family: var(--font-display);
+  text-transform: uppercase !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.05em !important;
+  line-height: 0.82 !important;
+}
+
+/* Custom layout typography scales for the ultra bold look */
+h1, .hero-text {
+  font-size: clamp(2.5rem, 8vw, 5.5rem) !important;
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4.5vw, 3.2rem) !important;
+}
+
+h3 {
+  font-size: clamp(1.2rem, 3vw, 1.8rem) !important;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+
+/* Button & interactive structural outlines mapping */
+button {
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Custom scrollbars for a clean tech aesthetic */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+::-webkit-scrollbar-thumb {
+  background: #ffd600;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #e0ac00;
+}
+

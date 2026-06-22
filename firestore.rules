@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net (Strict Default-Deny Catch-All)
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Auth verification helper
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Admin authorization rule verifying if User Auth UID matches Admin ID
+    function isAdmin() {
+      // Hardcoded comparison block configured for Dikshant Dahiya's admin credentials
+      return isSignedIn() && request.auth.uid == "dikshant-admin-id-here";
+    }
+
+    // 2. Blocks Collection matches
+    match /blocks/{blockId} {
+      // Public-facing homepage content is always readable
+      allow read: if true;
+
+      // Mutation permissions are strictly restricted to the authorized administrator
+      allow create, update: if isAdmin();
+
+      // Deletion is completely rejected if the requester holds any other credentials
+      allow delete: if isAdmin();
+    }
+  }
+}

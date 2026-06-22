@@ -1,0 +1,8 @@
+{
+  "name": "Remix: Duality Portfolio",
+  "description": "An interactive dual-mode portfolio showcasing professional ESG quality engineering and clean tech stewardship alongside personal interests, spiritual exploration, and live financial modeling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
