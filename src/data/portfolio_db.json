@@ -1,0 +1,36 @@
+{
+  "headline": "Engineering a Sustainable Future.",
+  "bio": "Professional journey of Dikshant Dahiya. Bridging technical rigor in process safety engineering with high-fidelity ESG research and system audit standards.",
+  "linkedin": "https://linkedin.com",
+  "github": "https://github.com",
+  "youtube": "https://youtube.com",
+  "assets": [],
+  "blocks": [
+    {
+      "id": "block_1",
+      "type": "text",
+      "value": "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process safety engineering with high-fidelity ESG research and system audit standards to eliminate anomalies across industrial processes.",
+      "sort_order": 10
+    },
+    {
+      "id": "block_2",
+      "type": "image",
+      "value": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1200",
+      "name": "High-Fidelity Assurance Audits",
+      "sort_order": 20
+    },
+    {
+      "id": "block_3",
+      "type": "text",
+      "value": "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) keeps organizational risk strictly mitigated.",
+      "sort_order": 30
+    },
+    {
+      "id": "block_4",
+      "type": "file_download",
+      "value": "/uploads/Dikshant_Dahiya_Portfolio_Checklists.xlsx",
+      "name": "Standard Audit Program & ESG Checklist Template.xlsx",
+      "sort_order": 40
+    }
+  ]
+}

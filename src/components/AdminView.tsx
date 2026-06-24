@@ -420,12 +420,13 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
 
             <form onSubmit={handleLogin} className="space-y-5">
               <div className="space-y-1">
-                <label className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
+                <label htmlFor="admin-email" className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
                   Admin Email Address
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-neutral-400" />
                   <input
+                    id="admin-email"
                     type="email"
                     required
                     value={email}
@@ -441,12 +442,13 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
               </div>
 
               <div className="space-y-1">
-                <label className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
+                <label htmlFor="admin-password" className="text-[10px] font-mono font-bold tracking-widest text-neutral-400 uppercase block">
                   Secure Password
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3.5 top-3.5 w-4 h-4 text-neutral-400" />
                   <input
+                    id="admin-password"
                     type="password"
                     required
                     value={password}
