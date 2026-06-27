@@ -627,6 +627,54 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                 </div>
               </div>
 
+              {/* PERSONAL STATS MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    Curiosity Metrics / Personal Stats
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addStat}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Stat
+                  </button>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {personalStats.map((stat, idx) => (
+                    <div key={idx} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 space-y-2">
+                      <div className="flex justify-between">
+                        <input
+                          type="text"
+                          value={stat.label}
+                          onChange={(e) => updateStat(idx, 'label', e.target.value)}
+                          placeholder="Label"
+                          className="bg-transparent border-b border-neutral-800 text-[10px] font-bold w-2/3 focus:outline-none focus:border-teal-400"
+                        />
+                        <button type="button" onClick={() => removeStat(idx)} className="text-red-500 hover:text-red-400">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        value={stat.value}
+                        onChange={(e) => updateStat(idx, 'value', e.target.value)}
+                        placeholder="Value (e.g. 50+)"
+                        className="bg-transparent border-b border-neutral-800 text-xs text-teal-400 focus:outline-none focus:border-teal-400 w-full"
+                      />
+                      <textarea
+                        value={stat.description}
+                        onChange={(e) => updateStat(idx, 'description', e.target.value)}
+                        placeholder="Description"
+                        className="w-full bg-transparent border border-neutral-800 rounded-lg p-2 text-[9px] focus:outline-none focus:border-teal-400"
+                        rows={2}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* DYNAMIC PORTFOLIO CONTENT BLOCKS MANAGER */}
               <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
                 <div>

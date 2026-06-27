@@ -5,7 +5,8 @@ import {
   JYOTIRLINGAS_INITIAL,
   IMMERSIVE_LAB_NODES,
   Jyotirlinga,
-  ExcelProject
+  ExcelProject,
+  PortfolioData
 } from '../types';
 import { 
   Youtube, 
@@ -30,9 +31,15 @@ import {
 
 interface PersonalViewProps {
   activeTab: string;
+  portfolio: PortfolioData;
 }
 
-export default function PersonalView({ activeTab }: PersonalViewProps) {
+export default function PersonalView({ activeTab, portfolio }: PersonalViewProps) {
+  // Dynamic data from portfolio
+  const currentStats = portfolio.personalStats || PERSONAL_STATS;
+  const currentProjects = portfolio.projects || EXCEL_PROJECTS;
+  const currentLabNodes = portfolio.labNodes || IMMERSIVE_LAB_NODES;
+
   // Persistence of Jyotirlingas visited status using localStorage
   const [jyotirlingas, setJyotirlingas] = useState<Jyotirlinga[]>(() => {
     const cached = localStorage.getItem('jyotirlingas_progress');
@@ -189,7 +196,7 @@ export default function PersonalView({ activeTab }: PersonalViewProps) {
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {PERSONAL_STATS.map((stat, idx) => (
+                {currentStats.map((stat, idx) => (
                   <div key={idx} className="bg-obsidian-900 border border-neutral-800 p-5 rounded-2xl">
                     <span className="font-display text-2xl font-extrabold text-teal-400 block">{stat.value}</span>
                     <span className="font-display font-semibold text-xs text-neutral-100 block mt-1">{stat.label}</span>
@@ -320,7 +327,7 @@ export default function PersonalView({ activeTab }: PersonalViewProps) {
 
           {/* Project List */}
           <div className="space-y-6">
-            {EXCEL_PROJECTS.map((project) => {
+            {currentProjects.map((project) => {
               const isExpanded = expandedExcelProject === project.id;
               return (
                 <div 
@@ -461,7 +468,7 @@ export default function PersonalView({ activeTab }: PersonalViewProps) {
             </div>
 
             {/* Nodes Map */}
-            {IMMERSIVE_LAB_NODES.map((node) => {
+            {currentLabNodes.map((node) => {
               const isActive = activeLabNode === node.id;
               return (
                 <button
@@ -530,13 +537,13 @@ export default function PersonalView({ activeTab }: PersonalViewProps) {
             <div className="md:col-span-7 flex flex-col justify-between">
               <div>
                 <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: currentLabNodeInfo.color }} />
+                  <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: currentLabNodeInfo?.color || '#8B5CF6' }} />
                   <h3 className="font-display font-extrabold text-sm sm:text-base text-neutral-100">
-                    Active Module: {currentLabNodeInfo.label}
+                    Active Module: {currentLabNodeInfo?.label || 'Module'}
                   </h3>
                 </div>
                 <p className="text-xs text-neutral-400 leading-relaxed mt-2 font-light">
-                  {currentLabNodeInfo.desc} In our testing suites, we optimize outputs through direct API script triggers to maintain pristine compliance and verification chains.
+                  {currentLabNodeInfo?.desc} In our testing suites, we optimize outputs through direct API script triggers to maintain pristine compliance and verification chains.
                 </p>
               </div>
 

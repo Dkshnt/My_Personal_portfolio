@@ -89,7 +89,7 @@ export default function App() {
             setSelectedMilestoneId={setSelectedMilestoneId}
           />
         ) : (
-          <PersonalView activeTab={activeTab} />
+          <PersonalView activeTab={activeTab} portfolio={portfolio} />
         )}
       </main>
 

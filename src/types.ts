@@ -266,5 +266,11 @@ export interface PortfolioData {
   youtube: string;
   assets?: { name: string; url: string; size: string; type: string; createdAt: string }[];
   blocks?: ContentBlock[];
+  milestones?: ExperienceMilestone[];
+  certifications?: Certification[];
+  esgMetrics?: ESGMetricInfo[];
+  projects?: ExcelProject[];
+  personalStats?: PersonalStat[];
+  labNodes?: typeof IMMERSIVE_LAB_NODES;
 }
 

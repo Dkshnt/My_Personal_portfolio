@@ -1,4 +1,4 @@
-import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck } from 'lucide-react';
+import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck, Shield } from 'lucide-react';
 
 interface NavbarProps {
   mode: 'professional' | 'personal';
@@ -135,6 +135,20 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                   <Moon className="w-3.5 h-3.5 text-teal-400 fill-teal-400" />
                 )}
               </span>
+            </button>
+
+            {/* Admin Access Button */}
+            <button
+              onClick={() => window.location.href = '/admin'}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all hover:scale-105 ${
+                isProd
+                  ? 'bg-sage-100 border-sage-200 text-sage-700 hover:bg-sage-200'
+                  : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700 hover:text-teal-400'
+              }`}
+              title="Admin Control Console"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase hidden lg:block">Admin</span>
             </button>
           </div>
 

@@ -42,7 +42,11 @@ export default function ProfessionalView({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  const selectedMilestone = EXPERIENCE_MILESTONES.find(m => m.id === selectedMilestoneId) || EXPERIENCE_MILESTONES[0];
+  const currentMilestones = portfolio.milestones || EXPERIENCE_MILESTONES;
+  const currentCertifications = portfolio.certifications || CERTIFICATIONS_LIST;
+  const currentEsgMetrics = portfolio.esgMetrics || ESG_METRICS_INFO;
+
+  const selectedMilestone = currentMilestones.find(m => m.id === selectedMilestoneId) || currentMilestones[0];
 
   const skillsData = [
     { name: 'BRSR Disclosures', category: 'ESG & Sustainability', score: 95, desc: 'India SEC mandated Business Responsibility & Sustainability Reporting frameworks.' },
@@ -206,7 +210,7 @@ export default function ProfessionalView({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {EXPERIENCE_MILESTONES.map((milestone) => (
+              {currentMilestones.map((milestone) => (
                 <div
                   key={milestone.id}
                   id={`stewardship-company-card-${milestone.id}`}
@@ -314,7 +318,7 @@ export default function ProfessionalView({
 
             {/* HIGH-CONTRAST SEGMENTED TABS REGION FOR CORPORATES */}
             <div className="flex flex-wrap gap-2.5 mb-8 bg-sage-100 p-1.5 rounded-2xl max-w-2xl border border-sage-200/40">
-              {EXPERIENCE_MILESTONES.map((milestone) => {
+              {currentMilestones.map((milestone) => {
                 const isActive = selectedMilestoneId === milestone.id;
                 return (
                   <button
@@ -438,7 +442,7 @@ export default function ProfessionalView({
 
           {/* Interactive Compliance & Quality metrics cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            {ESG_METRICS_INFO.map((metric) => (
+            {currentEsgMetrics.map((metric) => (
               <div key={metric.id} className="bg-white border border-sage-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                 <div className="flex justify-between items-start mb-3">
                   <span className={`px-2 py-0.5 rounded text-[8px] font-mono tracking-wider uppercase font-semibold border ${
@@ -667,7 +671,7 @@ export default function ProfessionalView({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {CERTIFICATIONS_LIST.map((cert) => (
+              {currentCertifications.map((cert) => (
                 <div key={cert.id} className="bg-sage-50 border border-sage-200/60 p-5 rounded-2xl flex items-start gap-4">
                   <div className="p-3 bg-white rounded-xl border border-sage-200 flex-shrink-0 text-sage-700">
                     <Award className="w-5 h-5 text-sage-700" />
