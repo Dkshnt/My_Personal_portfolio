@@ -11,6 +11,7 @@ export default function App() {
   const [mode, setMode] = useState<'professional' | 'personal'>('professional');
   const [activeTab, setActiveTab] = useState<string>('stewardship');
   const [selectedMilestoneId, setSelectedMilestoneId] = useState<string>('nse');
+  const [showAdmin, setShowAdmin] = useState(window.location.pathname === '/admin');
 
   // Dynamic portfolio customizer database state
   const [portfolio, setPortfolio] = useState<PortfolioData>({
@@ -37,15 +38,26 @@ export default function App() {
     fetchPortfolio();
   }, []);
 
-  const isProd = mode === 'professional';
-  const isAdminRoute = window.location.pathname === '/admin';
+  useEffect(() => {
+    const handlePopState = () => {
+      setShowAdmin(window.location.pathname === '/admin');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
-  if (isAdminRoute) {
+  const isProd = mode === 'professional';
+
+  if (showAdmin) {
     return (
       <AdminView 
         mode={mode} 
         portfolio={portfolio} 
-        onRefresh={fetchPortfolio} 
+        onRefresh={fetchPortfolio}
+        onClose={() => {
+          window.history.pushState({}, '', '/');
+          setShowAdmin(false);
+        }}
       />
     );
   }
@@ -73,7 +85,12 @@ export default function App() {
         mode={mode} 
         setMode={setMode} 
         activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
+        setActiveTab={setActiveTab}
+        setShowAdmin={(val) => {
+          if (val) window.history.pushState({}, '', '/admin');
+          else window.history.pushState({}, '', '/');
+          setShowAdmin(val);
+        }}
       />
 
       {/* Primary Page Grid */}

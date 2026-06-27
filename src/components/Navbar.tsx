@@ -5,9 +5,10 @@ interface NavbarProps {
   setMode: (mode: 'professional' | 'personal') => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  setShowAdmin: (val: boolean) => void;
 }
 
-export default function Navbar({ mode, setMode, activeTab, setActiveTab }: NavbarProps) {
+export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShowAdmin }: NavbarProps) {
   const isProd = mode === 'professional';
 
   // Available tabs depends on the mode
@@ -139,7 +140,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
 
             {/* Admin Access Button */}
             <button
-              onClick={() => window.location.href = '/admin'}
+              onClick={() => setShowAdmin(true)}
               className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all hover:scale-105 ${
                 isProd
                   ? 'bg-sage-100 border-sage-200 text-sage-700 hover:bg-sage-200'
