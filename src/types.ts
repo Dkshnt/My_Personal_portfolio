@@ -252,7 +252,7 @@ export const IMMERSIVE_LAB_NODES = [
 
 export interface ContentBlock {
   id: string;
-  type: 'text' | 'image' | 'file_download';
+  type: 'text' | 'image' | 'file_download' | 'link';
   value: string;
   name?: string;
   sort_order: number;

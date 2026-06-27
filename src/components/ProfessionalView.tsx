@@ -21,7 +21,8 @@ import {
   Check,
   TrendingUp,
   LineChart,
-  ShieldAlert
+  ShieldAlert,
+  ExternalLink
 } from 'lucide-react';
 
 interface ProfessionalViewProps {
@@ -168,6 +169,20 @@ export default function ProfessionalView({
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.0} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                                   </svg>
                                 </div>
+                              </a>
+                            </div>
+                          );
+                        } else if (block.type === 'link') {
+                          return (
+                            <div key={block.id} className="my-4">
+                              <a
+                                href={block.value}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-sage-700 text-white font-display text-xs font-bold uppercase tracking-wider hover:bg-sage-800 transition-all shadow-sm hover:shadow-md"
+                              >
+                                <span>{block.name || "Learn More"}</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
                               </a>
                             </div>
                           );

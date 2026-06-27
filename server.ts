@@ -114,9 +114,10 @@ app.post("/api/login", (req, res) => {
   if (password === configuredPassword) {
     // Return a simple secure-looking token
     const token = Buffer.from(JSON.stringify({ email, exp: Date.now() + 86450000 })).toString("base64");
+    res.setHeader("Content-Type", "application/json");
     res.json({ token });
   } else {
-    res.status(401).json({ error: "Incorrect administrator password" });
+    res.status(401).setHeader("Content-Type", "application/json").json({ error: "Incorrect administrator password" });
   }
 });
 
@@ -294,7 +295,13 @@ async function startViteServer() {
       server: { middlewareMode: true },
       appType: "spa",
     });
+    // Use vite's connect instance as middleware
     app.use(vite.middlewares);
+
+    // Explicitly handle SPA fallback for API routes to avoid returning HTML
+    app.use("/api/*", (req, res) => {
+      res.status(404).json({ error: "API endpoint not found" });
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));

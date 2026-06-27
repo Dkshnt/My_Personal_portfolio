@@ -27,6 +27,12 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
   const [github, setGithub] = useState(portfolio.github);
   const [youtube, setYoutube] = useState(portfolio.youtube);
   const [blocks, setBlocks] = useState<ContentBlock[]>(portfolio.blocks || []);
+  const [milestones, setMilestones] = useState(portfolio.milestones || []);
+  const [certifications, setCertifications] = useState(portfolio.certifications || []);
+  const [esgMetrics, setEsgMetrics] = useState(portfolio.esgMetrics || []);
+  const [projects, setProjects] = useState(portfolio.projects || []);
+  const [personalStats, setPersonalStats] = useState(portfolio.personalStats || []);
+  const [labNodes, setLabNodes] = useState(portfolio.labNodes || []);
 
   // File Upload and Asset states
   const [dragOver, setDragOver] = useState(false);
@@ -44,6 +50,12 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
     setGithub(portfolio.github);
     setYoutube(portfolio.youtube);
     setBlocks(portfolio.blocks || []);
+    setMilestones(portfolio.milestones || []);
+    setCertifications(portfolio.certifications || []);
+    setEsgMetrics(portfolio.esgMetrics || []);
+    setProjects(portfolio.projects || []);
+    setPersonalStats(portfolio.personalStats || []);
+    setLabNodes(portfolio.labNodes || []);
   }, [portfolio]);
 
   const handleLogin = async (e: FormEvent) => {
@@ -66,7 +78,15 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server error: ${res.status}. Expected JSON but received: ${text.substring(0, 100)}...`);
+      }
+
       if (!res.ok) {
         throw new Error(data.error || 'Authentication aborted');
       }
@@ -100,11 +120,25 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
           linkedin,
           github,
           youtube,
-          blocks
+          blocks,
+          milestones,
+          certifications,
+          esgMetrics,
+          projects,
+          personalStats,
+          labNodes
         })
       });
 
-      const data = await res.json();
+      let data;
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.indexOf("application/json") !== -1) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server error: ${res.status}. Expected JSON but received: ${text.substring(0, 100)}...`);
+      }
+
       if (!res.ok) {
         throw new Error(data.error || 'Failed to sync modifications.');
       }
@@ -151,8 +185,89 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
     setBlocks(prev => prev.filter(bk => bk.id !== id));
   };
 
+  // Helpers for Milestones
+  const addMilestone = () => {
+    setMilestones([...milestones, {
+      id: `ms_${Date.now()}`,
+      company: 'New Company',
+      role: 'Role',
+      period: 'Period',
+      location: 'Location',
+      logoColor: 'bg-stone-800',
+      keyMetric: 'Metric',
+      keyMetricLabel: 'Label',
+      summary: 'Summary',
+      responsibilities: [],
+      achievements: [],
+      toolsUsed: []
+    }]);
+  };
+  const updateMilestone = (id: string, field: string, value: any) => {
+    setMilestones(milestones.map(m => m.id === id ? { ...m, [field]: value } : m));
+  };
+  const removeMilestone = (id: string) => {
+    setMilestones(milestones.filter(m => m.id !== id));
+  };
+
+  // Helpers for Certifications
+  const addCert = () => {
+    setCertifications([...certifications, { id: `cert_${Date.now()}`, title: '', issuer: '', date: '' }]);
+  };
+  const updateCert = (id: string, field: string, value: any) => {
+    setCertifications(certifications.map(c => c.id === id ? { ...c, [field]: value } : c));
+  };
+  const removeCert = (id: string) => {
+    setCertifications(certifications.filter(c => c.id !== id));
+  };
+
+  // Helpers for ESG Metrics
+  const addMetric = () => {
+    setEsgMetrics([...esgMetrics, { id: `m_${Date.now()}`, title: '', currentValue: '', targetValue: '', unit: '', progressPercentage: 0, description: '', status: 'On Track' }]);
+  };
+  const updateMetric = (id: string, field: string, value: any) => {
+    setEsgMetrics(esgMetrics.map(m => m.id === id ? { ...m, [field]: value } : m));
+  };
+  const removeMetric = (id: string) => {
+    setEsgMetrics(esgMetrics.filter(m => m.id !== id));
+  };
+
+  // Helpers for Projects
+  const addProject = () => {
+    setProjects([...projects, { id: `p_${Date.now()}`, title: '', category: '', description: '', challenge: '', solution: '', stack: [], metrics: [] }]);
+  };
+  const updateProject = (id: string, field: string, value: any) => {
+    setProjects(projects.map(p => p.id === id ? { ...p, [field]: value } : p));
+  };
+  const removeProject = (id: string) => {
+    setProjects(projects.filter(p => p.id !== id));
+  };
+
+  // Helpers for Personal Stats
+  const addStat = () => {
+    setPersonalStats([...personalStats, { label: '', value: '', description: '' }]);
+  };
+  const updateStat = (index: number, field: string, value: any) => {
+    const newStats = [...personalStats];
+    newStats[index] = { ...newStats[index], [field]: value };
+    setPersonalStats(newStats);
+  };
+  const removeStat = (index: number) => {
+    setPersonalStats(personalStats.filter((_, i) => i !== index));
+  };
+
+  // Helpers for Lab Nodes
+  const addLabNode = () => {
+    setLabNodes([...labNodes, { id: `node_${Date.now()}`, label: 'New Node', desc: '', x: 50, y: 50, size: 50, color: '#3B82F6' }]);
+  };
+  const updateLabNode = (id: string, field: string, value: any) => {
+    setLabNodes(labNodes.map(n => n.id === id ? { ...n, [field]: value } : n));
+  };
+  const removeLabNode = (id: string) => {
+    setLabNodes(labNodes.filter(n => n.id !== id));
+  };
+
   // Helper to add/insert a block at/after a specific index
-  const insertBlockAt = (index: number, type: 'text' | 'image' | 'file_download') => {
+  const insertBlockAt = (index: number, type: 'text' | 'image' | 'file_download' | 'link') => {
     const newId = `block_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
     const newBlock: ContentBlock = {
       id: newId,
@@ -162,7 +277,7 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
         : type === 'image' 
           ? 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1200'
           : '',
-      name: type === 'file_download' ? 'Unnamed_Document.pdf' : (type === 'image' ? 'Image Visual Caption' : undefined),
+      name: type === 'file_download' ? 'Unnamed_Document.pdf' : (type === 'image' ? 'Image Visual Caption' : (type === 'link' ? 'Action Link Label' : undefined)),
       sort_order: (index + 1) * 10
     };
 
@@ -628,6 +743,200 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                 </div>
               </div>
 
+              {/* EXPERIENCE MILESTONES MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    Experience Milestones
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addMilestone}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Milestone
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {milestones.map((ms) => (
+                    <div key={ms.id} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 space-y-3">
+                      <div className="flex justify-between">
+                        <input
+                          type="text"
+                          value={ms.company}
+                          onChange={(e) => updateMilestone(ms.id, 'company', e.target.value)}
+                          placeholder="Company"
+                          className="bg-transparent border-b border-neutral-800 text-xs font-bold w-1/2 focus:outline-none focus:border-teal-400"
+                        />
+                        <button type="button" onClick={() => removeMilestone(ms.id)} className="text-red-500 hover:text-red-400">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <input
+                          type="text"
+                          value={ms.role}
+                          onChange={(e) => updateMilestone(ms.id, 'role', e.target.value)}
+                          placeholder="Role"
+                          className="bg-transparent border-b border-neutral-800 text-[10px] focus:outline-none focus:border-teal-400"
+                        />
+                        <input
+                          type="text"
+                          value={ms.period}
+                          onChange={(e) => updateMilestone(ms.id, 'period', e.target.value)}
+                          placeholder="Period"
+                          className="bg-transparent border-b border-neutral-800 text-[10px] focus:outline-none focus:border-teal-400"
+                        />
+                      </div>
+                      <textarea
+                        value={ms.summary}
+                        onChange={(e) => updateMilestone(ms.id, 'summary', e.target.value)}
+                        placeholder="Summary"
+                        className="w-full bg-transparent border border-neutral-800 rounded-lg p-2 text-[10px] focus:outline-none focus:border-teal-400"
+                        rows={2}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* PROJECTS MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    Excel Architecture Projects
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addProject}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Project
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {projects.map((p) => (
+                    <div key={p.id} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 space-y-3">
+                      <div className="flex justify-between">
+                        <input
+                          type="text"
+                          value={p.title}
+                          onChange={(e) => updateProject(p.id, 'title', e.target.value)}
+                          placeholder="Project Title"
+                          className="bg-transparent border-b border-neutral-800 text-xs font-bold w-1/2 focus:outline-none focus:border-teal-400"
+                        />
+                        <button type="button" onClick={() => removeProject(p.id)} className="text-red-500 hover:text-red-400">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <textarea
+                        value={p.description}
+                        onChange={(e) => updateProject(p.id, 'description', e.target.value)}
+                        placeholder="Description"
+                        className="w-full bg-transparent border border-neutral-800 rounded-lg p-2 text-[10px] focus:outline-none focus:border-teal-400"
+                        rows={2}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* CERTIFICATIONS MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    Certifications
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addCert}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Certification
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {certifications.map((c) => (
+                    <div key={c.id} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 flex items-center gap-3">
+                      <input
+                        type="text"
+                        value={c.title}
+                        onChange={(e) => updateCert(c.id, 'title', e.target.value)}
+                        placeholder="Title"
+                        className="flex-grow bg-transparent border-b border-neutral-800 text-[10px] focus:outline-none focus:border-teal-400"
+                      />
+                      <input
+                        type="text"
+                        value={c.issuer}
+                        onChange={(e) => updateCert(c.id, 'issuer', e.target.value)}
+                        placeholder="Issuer"
+                        className="w-1/4 bg-transparent border-b border-neutral-800 text-[10px] focus:outline-none focus:border-teal-400"
+                      />
+                      <button type="button" onClick={() => removeCert(c.id)} className="text-red-500 hover:text-red-400">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ESG METRICS MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    ESG Metrics
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addMetric}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Metric
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {esgMetrics.map((m) => (
+                    <div key={m.id} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 space-y-3">
+                      <div className="flex justify-between">
+                        <input
+                          type="text"
+                          value={m.title}
+                          onChange={(e) => updateMetric(m.id, 'title', e.target.value)}
+                          placeholder="Metric Title"
+                          className="bg-transparent border-b border-neutral-800 text-[10px] font-bold w-1/2 focus:outline-none focus:border-teal-400"
+                        />
+                        <button type="button" onClick={() => removeMetric(m.id)} className="text-red-500 hover:text-red-400">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-3 gap-3">
+                        <input
+                          type="text"
+                          value={m.currentValue}
+                          onChange={(e) => updateMetric(m.id, 'currentValue', e.target.value)}
+                          placeholder="Current"
+                          className="bg-transparent border-b border-neutral-800 text-[9px] focus:outline-none focus:border-teal-400"
+                        />
+                        <input
+                          type="text"
+                          value={m.targetValue}
+                          onChange={(e) => updateMetric(m.id, 'targetValue', e.target.value)}
+                          placeholder="Target"
+                          className="bg-transparent border-b border-neutral-800 text-[9px] focus:outline-none focus:border-teal-400"
+                        />
+                        <input
+                          type="number"
+                          value={m.progressPercentage}
+                          onChange={(e) => updateMetric(m.id, 'progressPercentage', parseInt(e.target.value) || 0)}
+                          placeholder="%"
+                          className="bg-transparent border-b border-neutral-800 text-[9px] focus:outline-none focus:border-teal-400"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* PERSONAL STATS MANAGER */}
               <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
                 <div className="flex justify-between items-center">
@@ -676,6 +985,65 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                 </div>
               </div>
 
+              {/* LAB NODES MANAGER */}
+              <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-display font-semibold text-xs text-neutral-400 uppercase tracking-widest">
+                    Immersive Lab Nodes
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={addLabNode}
+                    className="px-3 py-1 text-[10px] font-mono font-bold bg-teal-950/40 text-teal-400 border border-teal-500/20 rounded-lg hover:bg-teal-900/40 transition-colors"
+                  >
+                    + Add Node
+                  </button>
+                </div>
+                <div className="space-y-4">
+                  {labNodes.map((node) => (
+                    <div key={node.id} className="p-4 rounded-xl border border-neutral-800 bg-obsidian-950/40 space-y-2">
+                      <div className="flex justify-between">
+                        <input
+                          type="text"
+                          value={node.label}
+                          onChange={(e) => updateLabNode(node.id, 'label', e.target.value)}
+                          placeholder="Node Label"
+                          className="bg-transparent border-b border-neutral-800 text-[10px] font-bold w-1/2 focus:outline-none focus:border-teal-400"
+                        />
+                        <button type="button" onClick={() => removeLabNode(node.id)} className="text-red-500 hover:text-red-400">
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        value={node.desc}
+                        onChange={(e) => updateLabNode(node.id, 'desc', e.target.value)}
+                        placeholder="Node Description"
+                        className="bg-transparent border-b border-neutral-800 text-[9px] focus:outline-none focus:border-teal-400 w-full"
+                      />
+                      <div className="grid grid-cols-4 gap-2">
+                        <div className="flex flex-col">
+                          <label className="text-[8px] text-neutral-500 uppercase">X (%)</label>
+                          <input type="number" value={node.x} onChange={(e) => updateLabNode(node.id, 'x', parseInt(e.target.value))} className="bg-transparent border-b border-neutral-800 text-[9px]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="text-[8px] text-neutral-500 uppercase">Y (%)</label>
+                          <input type="number" value={node.y} onChange={(e) => updateLabNode(node.id, 'y', parseInt(e.target.value))} className="bg-transparent border-b border-neutral-800 text-[9px]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="text-[8px] text-neutral-500 uppercase">Size</label>
+                          <input type="number" value={node.size} onChange={(e) => updateLabNode(node.id, 'size', parseInt(e.target.value))} className="bg-transparent border-b border-neutral-800 text-[9px]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <label className="text-[8px] text-neutral-500 uppercase">Color</label>
+                          <input type="color" value={node.color} onChange={(e) => updateLabNode(node.id, 'color', e.target.value)} className="bg-transparent h-6" />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* DYNAMIC PORTFOLIO CONTENT BLOCKS MANAGER */}
               <div className="border-t border-neutral-800/60 pt-6 mt-6 space-y-4">
                 <div>
@@ -710,6 +1078,13 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                     className="px-2 py-0.5 text-[9px] font-mono font-bold bg-neutral-800 rounded text-neutral-300 hover:text-white transition-colors"
                   >
                     + File
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertBlockAt(0, 'link')}
+                    className="px-2 py-0.5 text-[9px] font-mono font-bold bg-neutral-800 rounded text-neutral-300 hover:text-white transition-colors"
+                  >
+                    + Link
                   </button>
                 </div>
 
@@ -845,6 +1220,40 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                           </div>
                         )}
 
+                        {block.type === 'link' && (
+                          <div className="space-y-3">
+                            <div className="space-y-1">
+                              <label className="text-[9px] font-mono font-medium text-neutral-400 uppercase block">
+                                Destination URL Link
+                              </label>
+                              <input
+                                type="text"
+                                value={block.value}
+                                onChange={(e) => updateBlockValue(block.id, e.target.value)}
+                                placeholder="https://external-resource.com"
+                                className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                  isProd
+                                    ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                    : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                }`}
+                              />
+                            </div>
+                            <div className="flex-grow">
+                              <input
+                                type="text"
+                                value={block.name || ''}
+                                onChange={(e) => updateBlockName(block.id, e.target.value)}
+                                placeholder="Button Label (e.g. View Case Study)..."
+                                className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                  isProd
+                                    ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                    : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        )}
+
                         {block.type === 'file_download' && (
                           <div className="space-y-3">
                             <div className="space-y-1">
@@ -912,6 +1321,13 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                           >
                             + File attachment
                           </button>
+                          <button
+                            type="button"
+                            onClick={() => insertBlockAt(index + 1, 'link')}
+                            className="px-2 py-0.5 text-[8px] font-mono font-bold bg-neutral-800 rounded text-neutral-400 hover:text-white transition-colors"
+                          >
+                            + Link
+                          </button>
                         </div>
 
                       </div>
@@ -943,6 +1359,13 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                         className="px-4 py-2 font-mono text-xs text-teal-400 bg-teal-950/40 rounded-xl hover:bg-teal-900/40 border border-teal-500/20"
                       >
                         + Add File Download
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => insertBlockAt(0, 'link')}
+                        className="px-4 py-2 font-mono text-xs text-teal-400 bg-teal-950/40 rounded-xl hover:bg-teal-900/40 border border-teal-500/20"
+                      >
+                        + Add Link
                       </button>
                     </div>
                   </div>
