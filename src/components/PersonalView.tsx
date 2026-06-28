@@ -44,10 +44,27 @@ export default function PersonalView({ activeTab, portfolio }: PersonalViewProps
   const [jyotirlingas, setJyotirlingas] = useState<Jyotirlinga[]>(() => {
     const cached = localStorage.getItem('jyotirlingas_progress');
     if (cached) {
-      try { return JSON.parse(cached); } catch (e) { /* fallback */ }
+      try {
+        const parsed = JSON.parse(cached);
+        // Merge visited status with latest descriptions from DB
+        const latest = portfolio.jyotirlingas || JYOTIRLINGAS_INITIAL;
+        return latest.map(l => ({
+          ...l,
+          visited: parsed.find((p: any) => p.id === l.id)?.visited || false
+        }));
+      } catch (e) { /* fallback */ }
     }
-    return JYOTIRLINGAS_INITIAL;
+    return portfolio.jyotirlingas || JYOTIRLINGAS_INITIAL;
   });
+
+  useEffect(() => {
+    // If portfolio changes, we should sync non-visited info but keep visited status
+    const latest = portfolio.jyotirlingas || JYOTIRLINGAS_INITIAL;
+    setJyotirlingas(prev => latest.map(l => ({
+      ...l,
+      visited: prev.find(p => p.id === l.id)?.visited || false
+    })));
+  }, [portfolio.jyotirlingas]);
 
   const [expandedExcelProject, setExpandedExcelProject] = useState<string | null>(null);
   const [activeLabNode, setActiveLabNode] = useState<string>('gemini');
@@ -76,7 +93,8 @@ export default function PersonalView({ activeTab, portfolio }: PersonalViewProps
 
   // Reset pilgrimage checklist
   const resetPilgrimage = () => {
-    setJyotirlingas(JYOTIRLINGAS_INITIAL.map(j => ({ ...j, visited: false })));
+    const latest = portfolio.jyotirlingas || JYOTIRLINGAS_INITIAL;
+    setJyotirlingas(latest.map(j => ({ ...j, visited: false })));
   };
 
   const visitedCount = jyotirlingas.filter(j => j.visited).length;
@@ -113,7 +131,7 @@ export default function PersonalView({ activeTab, portfolio }: PersonalViewProps
     }, 150);
   };
 
-  const currentLabNodeInfo = IMMERSIVE_LAB_NODES.find(n => n.id === activeLabNode) || IMMERSIVE_LAB_NODES[3];
+  const currentLabNodeInfo = currentLabNodes.find(n => n.id === activeLabNode) || currentLabNodes[0];
 
   const handleNodeClick = (nodeId: string, label: string) => {
     setActiveLabNode(nodeId);
@@ -135,13 +153,13 @@ export default function PersonalView({ activeTab, portfolio }: PersonalViewProps
           {/* Hero Branding Area */}
           <div className="mb-16">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-teal-500/10 text-teal-400 border border-teal-500/20">
-              Creative Perspective & Interests
+              {portfolio.personalHeroTag || "Creative Perspective & Interests"}
             </span>
             <h1 className="mt-4 font-display text-4xl sm:text-5xl font-bold tracking-tight text-neutral-100">
-              The Personal Interests Hub
+              {portfolio.personalHeroTitle || "The Personal Interests Hub"}
             </h1>
             <p className="mt-4 text-xs sm:text-sm text-neutral-400 max-w-2xl font-light leading-relaxed">
-              Dismantling global processes in professional frameworks leaves a creative residue. Here is the architecture of ideas, continuous self-education, and travel.
+              {portfolio.personalHeroDesc || "Dismantling global processes in professional frameworks leaves a creative residue. Here is the architecture of ideas, continuous self-education, and travel."}
             </p>
           </div>
 
@@ -158,24 +176,25 @@ export default function PersonalView({ activeTab, portfolio }: PersonalViewProps
                 <div>
                   <span className="text-[10px] font-mono tracking-widest text-neutral-400 uppercase block">Active Content Channel</span>
                   <h3 className="font-display font-extrabold text-xl text-neutral-100">
-                    "Uncovrd Minds"
+                    "{portfolio.youtubeChannelName || "Uncovrd Minds"}"
                   </h3>
                 </div>
               </div>
 
               <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed mb-6">
-                An active media experiment curated by Dikshant. Focusing on explaining psychological matrices, systems analysis, evolutionary constraints of the human brain, and ancient civilizational histories in a highly scannable, engaging format.
+                {portfolio.youtubeDescription || "An active media experiment curated by Dikshant. Focusing on explaining psychological matrices, systems analysis, evolutionary constraints of the human brain, and ancient civilizational histories in a highly scannable, engaging format."}
               </p>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
-                <div className="bg-obsidian-950 border border-neutral-800/80 p-4 rounded-xl">
-                  <span className="block text-2xl font-display font-bold text-neutral-100">6,500+</span>
-                  <span className="block text-[9px] font-mono text-neutral-400 uppercase tracking-wider mt-0.5">Subscribed Learners</span>
-                </div>
-                <div className="bg-obsidian-950 border border-neutral-800/80 p-4 rounded-xl">
-                  <span className="block text-2xl font-display font-bold text-neutral-100">240K+</span>
-                  <span className="block text-[9px] font-mono text-neutral-400 uppercase tracking-wider mt-0.5">Organic Content Views</span>
-                </div>
+                {(portfolio.youtubeStats || [
+                  { label: 'Subscribed Learners', value: '6,500+' },
+                  { label: 'Organic Content Views', value: '240K+' }
+                ]).map((stat, idx) => (
+                  <div key={idx} className="bg-obsidian-950 border border-neutral-800/80 p-4 rounded-xl">
+                    <span className="block text-2xl font-display font-bold text-neutral-100">{stat.value}</span>
+                    <span className="block text-[9px] font-mono text-neutral-400 uppercase tracking-wider mt-0.5">{stat.label}</span>
+                  </div>
+                ))}
               </div>
 
               <a 

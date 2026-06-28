@@ -42,19 +42,21 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShow
                 ? 'bg-sage-700 text-white shadow-sm' 
                 : 'bg-teal-500 text-obsidian-950 shadow-[0_0_15px_rgba(20,184,166,0.3)]'
             }`}>
-              D
+              {(portfolio.footerName || "Dikshant Dahiya")[0]}
               <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border ${
                 isProd ? 'bg-emerald-500 border-sage-50' : 'bg-amber-400 border-obsidian-950'
               }`} />
             </div>
             <div>
               <span className="font-display font-semibold text-lg tracking-tight block">
-                Dikshant Dahiya
+                {portfolio.footerName || "Dikshant Dahiya"}
               </span>
               <span className={`text-[10px] font-mono leading-none tracking-wider uppercase block ${
                 isProd ? 'text-sage-700' : 'text-teal-400'
               }`}>
-                {isProd ? 'Stewardship & ESG Quality' : 'The Creative Duality Lab'}
+                {isProd
+                  ? (portfolio.navProfessionalTitle || "Stewardship & ESG Quality")
+                  : (portfolio.navPersonalTitle || "The Creative Duality Lab")}
               </span>
             </div>
           </div>
@@ -140,6 +142,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShow
 
             {/* Admin Access Button */}
             <button
+              id="admin-login-shield-btn"
               onClick={() => setShowAdmin(true)}
               className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all hover:scale-105 ${
                 isProd

@@ -1,6 +1,6 @@
 {
   "headline": "Engineering a Sustainable Future.",
-  "bio": "Professional journey of Dikshant Dahiya. Bridging technical rigor in process safety engineering with high-fidelity ESG research and system audit standards.",
+  "bio": "Professional journey of Dikshant Dahiya. Bridging technical rigor in process safety engineering with high-fidelity ESG research and system audit standards to eliminate anomalies across industrial processes.",
   "linkedin": "https://linkedin.com",
   "github": "https://github.com",
   "youtube": "https://youtube.com",
@@ -32,5 +32,163 @@
       "name": "Standard Audit Program & ESG Checklist Template.xlsx",
       "sort_order": 40
     }
-  ]
+  ],
+  "milestones": [
+    {
+      "id": "nse",
+      "company": "NSE",
+      "role": "Deputy Manager",
+      "period": "Apr 2026 - Current",
+      "location": "Mumbai, India",
+      "logoColor": "bg-emerald-700",
+      "keyMetric": "BRSR",
+      "keyMetricLabel": "Assessment Standard",
+      "summary": "Evaluating listed companies' ESG metrics, translating regulatory mandates, and managing controversy trackers to ensure high-fidelity marketplace sustainability ratings.",
+      "responsibilities": [
+        "Evaluated listed companies' Business Responsibility and Sustainability Reporting (BRSR) disclosures and translated regulatory requirements into structured ESG assessment methodologies.",
+        "Analyzed and monitored severe controversies and corporate governance-related developments that materially impact company-level ESG risk ratings.",
+        "Collaborated closely with internal stakeholders to resolve complex ESG methodology queries and improve data collection standards, governance, and reporting consistency."
+      ],
+      "achievements": [
+        "Ensured highly consistent, accurate, and standardized scoring across multiple environmental, social, and governance indicator frameworks.",
+        "Strengthened sovereign data alignment by systematically mapping legislative disclosure policies directly into active scoring algorithms."
+      ],
+      "toolsUsed": ["BRSR Frameworks", "SOP Quality Assurance", "Controversy Databases", "Corporate Governance Checklists"]
+    },
+    {
+      "id": "sustainalytics",
+      "company": "Morningstar (Sustainalytics)",
+      "role": "Senior ESG Research Analyst / Research Analyst",
+      "period": "Jun 2022 - Apr 2026",
+      "location": "Mumbai, India",
+      "logoColor": "bg-teal-700",
+      "keyMetric": "5,000+",
+      "keyMetricLabel": "Companies Scoped",
+      "summary": "Advanced from ESG Research Analyst to Senior ESG Research Analyst. Directed multi-product carbon emission workflow engineering, supported complex emission validations as Carbon SME, and conducted user acceptance testing on core data collection systems.",
+      "responsibilities": [
+        "Managed stakeholder requirements across eight ESG products, collaborating with cross-functional teams through JIRA to optimize workflows and reduce average ticket resolution time by 40%.",
+        "Designed and documented standardized ESG data collection workflows and functional processes for carbon disclosure research, increasing analyst productivity by 54%.",
+        "Served as Subject Matter Expert (SME) for the Carbon Research team, supporting complex emissions data validation, methodology alignment, and resolution of company-level carbon reporting issues.",
+        "Analyzed business requirements and redesigned ESG data validation workflows covering 700–1,000 weekly exceptions across 40+ metrics, reducing turnaround time from 15 to 7 days.",
+        "Led user acceptance testing for a carbon data collection platform, identified 15+ critical defects, and collaborated to automate ESG reporting processes and Power BI dashboards, reducing manual effort by 60%.",
+        "Managed and validated ESG and carbon datasets for 5,000+ companies, analyzing emissions boundaries and calculation methodologies using frameworks like GHG Protocol, CDP, TCFD, PCAF, OGMP, EU PEF, and BRSR."
+      ],
+      "achievements": [
+        "Successfully boosted carbon research analyst productivity by 54% through optimized workflow architectures and streamlined standard guides.",
+        "Drastically reduced exceptions validation turnaround time from 15 days to under 7 days representing a 53% efficiency improvement.",
+        "Identified and resolved 15+ critical platform defects during Carbon Platform User Acceptance Testing (UAT), guiding functional enhancements.",
+        "Optimized data and technology team workflows to reduce manual reporting efforts by 60% with custom Power BI dashboards."
+      ],
+      "toolsUsed": ["JIRA & Confluence", "Power BI & Excel", "GHG Protocol & CDP", "TCFD, PCAF, OGMP", "BRSR Disclosures", "UAT Testing Plans"]
+    },
+    {
+      "id": "borgwarner",
+      "company": "BorgWarner",
+      "role": "Quality Engineer",
+      "period": "Jun 2018 - Jun 2021",
+      "location": "Manesar, India",
+      "logoColor": "bg-stone-850",
+      "keyMetric": "FPY/DPMO",
+      "keyMetricLabel": "Defect Reductions",
+      "summary": "Supervised automotive assembly quality reviews, spearheaded multi-departmental ISO compliance audits, and tracked precision defect metrics.",
+      "responsibilities": [
+        "Managed root cause analysis (RCA) and established preventive and corrective actions (CAPA) to minimize component defect ratios.",
+        "Facilitated team alignment during external quality audits, internal manufacturing reviews, and primary client relationship panels.",
+        "Tracked First Pass Yield (FPY) and Defects Per Million Opportunities (DPMO) indicators to guide predictive control charts."
+      ],
+      "achievements": [
+        "Dramatically decreased manufacturing line scrap value by building interactive root cause tracking and correction systems.",
+        "Successfully sustained excellent quality performance levels and established zero non-conformance during continuous client reviews."
+      ],
+      "toolsUsed": ["Root Cause Analysis (RCA)", "Corrective Actions (CAPA)", "FPY & DPMO Indicators", "Quality Control Assemblies"]
+    }
+  ],
+  "certifications": [
+    { "id": "1", "title": "CFA Institute ESG Investing Certificate", "issuer": "CFA Institute", "date": "2023", "credentialId": "CFA-ESG-49021" },
+    { "id": "2", "title": "Global Reporting Initiative (GRI) Certified Professional", "issuer": "G GRI Standards Board", "date": "2022", "credentialId": "GRI-P-8820" },
+    { "id": "3", "title": "Task Force on Climate-related Financial Disclosures (TCFD) Academy", "issuer": "FSB TCFD Organization", "date": "2022" },
+    { "id": "4", "title": "Six Sigma Green Belt (Quality Systems)", "issuer": "American Society for Quality (ASQ)", "date": "2019", "credentialId": "SSGB-9921" }
+  ],
+  "esgMetrics": [
+    { "id": "emissions", "title": "Carbon Footprint Reductions", "currentValue": "22%", "targetValue": "30%", "unit": "Reduction vs Baseline", "progressPercentage": 73, "description": "Direct assembly energy optimization and supplier engagement frameworks for green energy onboarding.", "status": "On Track" },
+    { "id": "waste", "title": "Manufacturing Scrap Diversion", "currentValue": "94%", "targetValue": "95%", "unit": "Landfill Diversion Rate", "progressPercentage": 99, "description": "Zero-Waste-to-Landfill initiative utilizing localized circular scrap reuse networks.", "status": "Ahead" }
+  ],
+  "projects": [
+    {
+      "id": "financial-model",
+      "title": "3-Statement Corporate Financial Model",
+      "category": "Corporate Finance & Modeling",
+      "description": "A fully integrated, dynamic financial model incorporating Income Statement, Balance Sheet, and Free Cash Flow Statement with scenario sliders and automated debt sizing.",
+      "challenge": "Handling circular references in debt-interest modeling without crashing Excel, while keeping calculations fully transparent across diverse operational scenarios.",
+      "solution": "Designed robust iterative cell structures coupled with target-seeking macro routines. Integrated strict error-checking checklists to balance state sheets instantly.",
+      "stack": ["Excel Architecture", "VBA Scenario Engines", "Dynamic Arrays", "Monte Carlo Simulators"],
+      "metrics": ["0 circular reference breaks", "3 distinct macroeconomic scenarios (Base, Bull, Bear)", "99.9% state balance accuracy"],
+      "docUrl": "#",
+      "sourceUrl": "#"
+    }
+  ],
+  "personalStats": [
+    { "label": "Books Read", "value": "52+", "description": "Annual focus on evolutionary biology, systemics, history, and neurophilosophy." },
+    { "label": "Lab Experiments", "value": "140+", "description": "Local tool configurations, API pipelines, automated spreadsheets, dynamic prompts." }
+  ],
+  "labNodes": [
+    { "id": "gemini", "label": "Gemini Pro", "desc": "Engineering dynamic prompt templates to classify corporate emission declarations automatically.", "x": 50, "y": 55, "size": 70, "color": "#8B5CF6" },
+    { "id": "notebooklm", "label": "NotebookLM", "desc": "Synthesizing 50+ books and research documents into localized knowledge maps.", "x": 42, "y": 15, "size": 55, "color": "#10B981" }
+  ],
+  "skills": [
+    { "name": "BRSR Disclosures", "category": "ESG & Sustainability", "score": 95, "desc": "India SEC mandated Business Responsibility & Sustainability Reporting frameworks." },
+    { "name": "ESG Risk Analytics", "category": "ESG & Sustainability", "score": 90, "desc": "Material ESG risk identification & portfolio risk analytics." },
+    { "name": "Excel Advanced Modeling", "category": "Strategic Tools", "score": 98, "desc": "Multi-statement corporate models, matrix operations and automated analytics." }
+  ],
+  "faqs": [
+    {
+      "q": "How does the ESG Audit Automation System reduce anomalies by 40%?",
+      "a": "By transferring manually validated checklists into integrated Excel verification engines powered by dynamic logic formulas. This establishes hard programmatic safeguards that catch misaligned columns, incorrect data types, and micro-discrepancies instantly before submission."
+    }
+  ],
+  "youtubeStats": [
+    { "label": "Subscribed Learners", "value": "6,500+" },
+    { "label": "Organic Content Views", "value": "240K+" }
+  ],
+  "jyotirlingas": [
+    { "id": "somnath", "name": "Somnath", "state": "Gujarat", "location": "Prabhas Patan", "deitySpec": "The Eternal Shrine, first of the twelve, reconstructed seven times.", "visited": false },
+    { "id": "kedarnath", "name": "Kedarnath", "state": "Uttarakhand", "location": "Garhwal Himalayas", "deitySpec": "The highest among the twelve, resting at 11,750 ft surrounded by snow.", "visited": false }
+  ],
+  "bannerStats": [
+    { "value": "5K+", "label": "Corporate Profiles Vetted" },
+    { "value": "40%", "label": "Evaluation Discrepancy Reduction" },
+    { "value": "4 / 4", "label": "Perfect ISO 14001 Audits" },
+    { "value": "7+ Yrs", "label": "Process Systems Experience" }
+  ],
+  "youtubeChannelName": "Uncovrd Minds",
+  "youtubeDescription": "An active media experiment curated by Dikshant. Focusing on explaining psychological matrices, systems analysis, evolutionary constraints of the human brain, and ancient civilizational histories in a highly scannable, engaging format.",
+  "contactEmail": "dikshant9911@gmail.com",
+  "contactPhone": "+91 9911 XXXXXX",
+  "location": "Mumbai, India",
+  "footerName": "Dikshant Dahiya",
+  "methodologyTitle": "Methodology: Standardization & QA Integration",
+  "methodologyDesc": "In both manufacturing environments (BorgWarner) and complex financial information networks (NSE, Sustainalytics), quality is not an afterthought—it is engineered into the system. Our proprietary framework uses a three-tier standardization matrix:",
+  "methodologyPhases": [
+    { "title": "Data Ingest Audit", "desc": "Evaluating raw disclosures to isolate standard regulatory discrepancies immediately." },
+    { "title": "Algorithmic Filters", "desc": "Using deep spreadsheet formula checkpoints to monitor material integrity flags." },
+    { "title": "SOP Vetting", "desc": "Strict final peer-review and validation matrices ensuring absolute compliance output." }
+  ],
+  "infrastructureTitle": "Data Audit Infrastructure",
+  "infrastructureItems": [
+    { "title": "Excel Dynamic Matrix Modeling", "percent": 98, "color": "bg-emerald-600", "icon": "FileSpreadsheet", "desc": "Advanced multidimensional arrays, recursive VBA algorithms, and high-fidelity scenario modeling trackers." },
+    { "title": "Regulatory Reporting Standards", "percent": 92, "color": "bg-sage-800", "icon": "Layers", "desc": "Experienced in formal BRSR mandates, SASB materiality maps, standard CSR disclosures and GRI standards." }
+  ],
+  "connectSubjects": [
+    "ESG Research Collaboration",
+    "Process Audit Standardization",
+    "Excel Architecture Inquiry",
+    "Sustainability Data Pipelines",
+    "General Professional Inquiry"
+  ],
+  "navProfessionalTitle": "Stewardship",
+  "navPersonalTitle": "Creative",
+  "professionalHeroTag": "Stewardship Portfolio & Resume",
+  "personalHeroTag": "Creative Perspective & Interests",
+  "personalHeroTitle": "The Personal Interests Hub",
+  "personalHeroDesc": "Dismantling global processes in professional frameworks leaves a creative residue. Here is the architecture of ideas, continuous self-education, and travel."
 }

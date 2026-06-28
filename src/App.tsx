@@ -126,7 +126,7 @@ export default function App() {
               </span>
             </div>
             <p className="text-[10px] font-mono mt-1 text-neutral-400">
-              Dikshant Dahiya &copy; {new Date().getFullYear()} &bull; Professional & Personal Symmetry
+              {portfolio.footerName || "Dikshant Dahiya"} &copy; {new Date().getFullYear()} &bull; Professional & Personal Symmetry
             </p>
           </div>
 

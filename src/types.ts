@@ -35,6 +35,7 @@ export interface ExcelProject {
   metrics: string[];
   docUrl?: string;
   sourceUrl?: string;
+  imageUrl?: string;
 }
 
 export interface ExperienceMilestone {
@@ -44,12 +45,15 @@ export interface ExperienceMilestone {
   period: string;
   location: string;
   logoColor: string; // Tailwind class background
+  shortCode?: string;
   keyMetric: string;
   keyMetricLabel: string;
   summary: string;
   responsibilities: string[];
   achievements: string[];
   toolsUsed: string[];
+  mediaUrl?: string;
+  attachmentUrl?: string;
 }
 
 export interface Certification {
@@ -271,6 +275,29 @@ export interface PortfolioData {
   esgMetrics?: ESGMetricInfo[];
   projects?: ExcelProject[];
   personalStats?: PersonalStat[];
-  labNodes?: typeof IMMERSIVE_LAB_NODES;
+  labNodes?: any[];
+  skills?: { name: string; category: string; score: number; desc: string }[];
+  faqs?: { q: string; a: string }[];
+  youtubeStats?: { label: string; value: string }[];
+  jyotirlingas?: Jyotirlinga[];
+  bannerStats?: { label: string; value: string }[];
+  youtubeChannelName?: string;
+  youtubeDescription?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  location?: string;
+  footerName?: string;
+  methodologyTitle?: string;
+  methodologyDesc?: string;
+  methodologyPhases?: { title: string; desc: string }[];
+  infrastructureTitle?: string;
+  infrastructureItems?: { title: string; percent: number; color: string; icon: string; desc: string }[];
+  connectSubjects?: string[];
+  navProfessionalTitle?: string;
+  navPersonalTitle?: string;
+  professionalHeroTag?: string;
+  personalHeroTag?: string;
+  personalHeroTitle?: string;
+  personalHeroDesc?: string;
 }
 
