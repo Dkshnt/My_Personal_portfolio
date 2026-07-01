@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -36,7 +36,10 @@ const defaultPortfolio = {
 function readDb() {
   try {
     if (!fs.existsSync(dbPath)) {
-      fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+      const dir = path.dirname(dbPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
       fs.writeFileSync(dbPath, JSON.stringify(defaultPortfolio, null, 2), "utf8");
       return defaultPortfolio;
     }
@@ -52,7 +55,10 @@ function readDb() {
 
 function writeDb(data: any) {
   try {
-    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    const dir = path.dirname(dbPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf8");
     return true;
   } catch (err) {
@@ -149,23 +155,30 @@ app.delete("/api/assets", authMiddleware, (req, res) => {
   res.status(404).json({ error: "Asset not found" });
 });
 
-// SPA Setup
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
-    app.use(vite.middlewares);
-    app.use("/api/*", (req, res) => res.status(404).json({ error: "Endpoint not found" }));
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res, next) => {
-      if (req.path.startsWith("/api/")) return next();
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-    app.use("/api/*", (req, res) => res.status(404).json({ error: "Endpoint not found" }));
+// Explicitly handle 404s for /api/* to always return JSON
+app.use("/api/*", (req, res) => {
+  res.status(404).json({ error: `API endpoint ${req.originalUrl} not found` });
+});
+
+export default app;
+
+// Setup Vite Dev server or Serve production assets
+if (require.main === module) {
+  async function startServer() {
+    if (process.env.NODE_ENV !== "production") {
+      const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
+      app.use(vite.middlewares);
+    } else {
+      const distPath = path.join(process.cwd(), "dist");
+      app.use(express.static(distPath));
+      app.get("*", (req, res, next) => {
+        if (req.path.startsWith("/api/")) return next();
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    }
+
+    app.listen(PORT, "0.0.0.0", () => console.log(`[SYSTEM] Server listening at port ${PORT}`));
   }
 
-  app.listen(PORT, "0.0.0.0", () => console.log(`[SYSTEM] Server listening at port ${PORT}`));
+  startServer();
 }
-
-startServer();
