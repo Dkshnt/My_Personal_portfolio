@@ -1,13 +1,11 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
-const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -36,11 +34,6 @@ const defaultPortfolio = {
 function readDb() {
   try {
     if (!fs.existsSync(dbPath)) {
-      const dir = path.dirname(dbPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-      fs.writeFileSync(dbPath, JSON.stringify(defaultPortfolio, null, 2), "utf8");
       return defaultPortfolio;
     }
     const data = fs.readFileSync(dbPath, "utf8");
@@ -55,10 +48,13 @@ function readDb() {
 
 function writeDb(data: any) {
   try {
-    const dir = path.dirname(dbPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    // Skip file system operations on Vercel as it's read-only
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      console.warn("Write attempted in production/vercel environment. Persistence skipped.");
+      return true;
     }
+    const dir = path.dirname(dbPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf8");
     return true;
   } catch (err) {
@@ -67,6 +63,11 @@ function writeDb(data: any) {
   }
 }
 
+// Health check
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", vercel: !!process.env.VERCEL });
+});
+
 // API Endpoints
 app.get("/api/portfolio", (req, res) => {
   res.status(200).json(readDb());
@@ -74,13 +75,8 @@ app.get("/api/portfolio", (req, res) => {
 
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: "Missing credentials" });
-  }
-
-  if (email.toLowerCase() !== "dikshant9911@gmail.com") {
-    return res.status(401).json({ error: "Access denied" });
-  }
+  if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
+  if (email.toLowerCase() !== "dikshant9911@gmail.com") return res.status(401).json({ error: "Access denied." });
 
   const configuredPassword = process.env.ADMIN_PASSWORD || "dikshant123";
   if (password === configuredPassword) {
@@ -94,25 +90,18 @@ app.post("/api/login", (req, res) => {
 // Middleware for authenticated routes
 const authMiddleware = (req: any, res: any, next: any) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return res.status(401).json({ error: "Unauthorized" });
   const token = authHeader.split(" ")[1];
   try {
     const payload = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
-    if (payload.email === "dikshant9911@gmail.com" && payload.exp > Date.now()) {
-      return next();
-    }
+    if (payload.email === "dikshant9911@gmail.com" && payload.exp > Date.now()) return next();
   } catch (e) {}
   return res.status(401).json({ error: "Invalid session" });
 };
 
 app.post("/api/portfolio", authMiddleware, (req, res) => {
-  if (writeDb(req.body)) {
-    res.status(200).json({ success: true });
-  } else {
-    res.status(500).json({ error: "Failed to update database" });
-  }
+  if (writeDb(req.body)) res.status(200).json({ success: true });
+  else res.status(500).json({ error: "Failed to update database" });
 });
 
 app.post("/api/upload", authMiddleware, (req, res) => {
@@ -120,6 +109,8 @@ app.post("/api/upload", authMiddleware, (req, res) => {
   if (!filename || !mimeType || !base64Data) return res.status(400).json({ error: "Incomplete data" });
 
   try {
+    if (process.env.VERCEL) return res.status(403).json({ error: "Local uploads not supported on Vercel." });
+
     const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
     const buffer = Buffer.from(cleanBase64, "base64");
     const uniqueName = `${path.basename(filename, path.extname(filename))}_${Date.now()}${path.extname(filename)}`;
@@ -142,6 +133,7 @@ app.post("/api/upload", authMiddleware, (req, res) => {
 app.delete("/api/assets", authMiddleware, (req, res) => {
   const { url } = req.body;
   if (!url) return res.status(400).json({ error: "Missing URL" });
+  if (process.env.VERCEL) return res.status(403).json({ error: "Local deletes not supported on Vercel." });
 
   const db = readDb();
   const asset = db.assets.find((a: any) => a.url === url);
@@ -155,30 +147,31 @@ app.delete("/api/assets", authMiddleware, (req, res) => {
   res.status(404).json({ error: "Asset not found" });
 });
 
-// Explicitly handle 404s for /api/* to always return JSON
+// Explicitly handle 404s for /api/* to prevent falling back to HTML
 app.use("/api/*", (req, res) => {
   res.status(404).json({ error: `API endpoint ${req.originalUrl} not found` });
 });
 
 export default app;
 
-// Setup Vite Dev server or Serve production assets
-if (require.main === module) {
-  async function startServer() {
+// Setup local server if not on Vercel
+if (!process.env.VERCEL) {
+  const PORT = Number(process.env.PORT) || 3000;
+  const startServer = async () => {
     if (process.env.NODE_ENV !== "production") {
+      const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
       app.use(vite.middlewares);
     } else {
       const distPath = path.join(process.cwd(), "dist");
       app.use(express.static(distPath));
-      app.get("*", (req, res, next) => {
-        if (req.path.startsWith("/api/")) return next();
+      app.get("*", (req, res) => {
+        // Double check it's not an API route that missed the 404 handler
+        if (req.path.startsWith("/api/")) return;
         res.sendFile(path.join(distPath, "index.html"));
       });
     }
-
-    app.listen(PORT, "0.0.0.0", () => console.log(`[SYSTEM] Server listening at port ${PORT}`));
-  }
-
+    app.listen(PORT, "0.0.0.0", () => console.log(`[SYSTEM] Server listening at http://localhost:${PORT}`));
+  };
   startServer();
 }
