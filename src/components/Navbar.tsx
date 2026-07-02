@@ -1,4 +1,5 @@
 import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck, Shield } from 'lucide-react';
+import { PortfolioData } from '../types';
 
 interface NavbarProps {
   mode: 'professional' | 'personal';
@@ -6,9 +7,10 @@ interface NavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   setShowAdmin: (val: boolean) => void;
+  portfolio: PortfolioData;
 }
 
-export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShowAdmin }: NavbarProps) {
+export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShowAdmin, portfolio }: NavbarProps) {
   const isProd = mode === 'professional';
 
   // Available tabs depends on the mode

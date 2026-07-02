@@ -424,12 +424,18 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                 <div className="p-8 rounded-[2rem] bg-black/40 border border-neutral-800/50 space-y-6">
                   <h4 className="text-[10px] font-mono font-black text-neutral-400 uppercase tracking-widest mb-4">Social Media Handlers</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    {['linkedin', 'github', 'youtube'].map(plat => (
-                      <div key={plat} className="space-y-1.5">
-                        <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">{plat}</label>
-                        <input type="url" value={(window as any)[plat]} onChange={(e) => plat === 'linkedin' ? setLinkedin(e.target.value) : plat === 'github' ? setGithub(e.target.value) : setYoutube(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
-                      </div>
-                    ))}
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">LinkedIn</label>
+                      <input type="url" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">GitHub</label>
+                      <input type="url" value={github} onChange={(e) => setGithub(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">YouTube</label>
+                      <input type="url" value={youtube} onChange={(e) => setYoutube(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                    </div>
                   </div>
                 </div>
               </section>

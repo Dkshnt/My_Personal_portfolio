@@ -86,6 +86,7 @@ export default function App() {
         setMode={setMode} 
         activeTab={activeTab} 
         setActiveTab={setActiveTab}
+        portfolio={portfolio}
         setShowAdmin={(val) => {
           if (val) window.history.pushState({}, '', '/admin');
           else window.history.pushState({}, '', '/');
