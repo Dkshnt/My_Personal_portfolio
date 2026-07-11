@@ -26,7 +26,7 @@ const defaultPortfolio = {
     {
       id: "block_1",
       type: "text",
-      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process safety engineering with high-fidelity ESG research and system audit standards to eliminate anomalies across industrial processes.",
+      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process sa[...]
       sort_order: 10
     },
     {
@@ -39,7 +39,7 @@ const defaultPortfolio = {
     {
       id: "block_3",
       type: "text",
-      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) keeps organizational risk strictly mitigated.",
+      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) [...]
       sort_order: 30
     },
     {
@@ -298,10 +298,12 @@ async function startViteServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
   }
+
+  // SPA fallback: serve index.html for all non-API routes
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(process.cwd(), "index.html"));
+  });
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server listening at http://0.0.0.0:${PORT}`);
