@@ -5,7 +5,8 @@ import {
   JYOTIRLINGAS_INITIAL,
   IMMERSIVE_LAB_NODES,
   Jyotirlinga,
-  ExcelProject
+  ExcelProject,
+  PortfolioData
 } from '../types';
 import { 
   Youtube, 
@@ -30,9 +31,10 @@ import {
 
 interface PersonalViewProps {
   activeTab: string;
+  portfolio?: PortfolioData;
 }
 
-export default function PersonalView({ activeTab }: PersonalViewProps) {
+export default function PersonalView({ activeTab, portfolio }: PersonalViewProps) {
   // Persistence of Jyotirlingas visited status using localStorage
   const [jyotirlingas, setJyotirlingas] = useState<Jyotirlinga[]>(() => {
     const cached = localStorage.getItem('jyotirlingas_progress');
