@@ -298,12 +298,17 @@ async function startViteServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-  }
 
-  // SPA fallback: serve index.html for all non-API routes
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "dist", "index.html"));
-  });
+    // SPA fallback for production only: serve index.html for all non-API routes
+    app.get("*", (req, res) => {
+      const indexPath = path.join(distPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+      } else {
+        res.status(404).json({ error: "index.html not found" });
+      }
+    });
+  }
 
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server listening at http://0.0.0.0:${PORT}`);
