@@ -79,7 +79,7 @@ export default function App() {
       {/* Primary Page Grid */}
       <main className="flex-grow">
         {activeTab === 'connect' ? (
-          <PersonalView activeTab={activeTab} portfolio={portfolio} />
+          <ConnectView mode={mode} portfolio={portfolio} />
         ) : isProd ? (
           <ProfessionalView 
             activeTab={activeTab} 
