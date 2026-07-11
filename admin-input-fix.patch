@@ -1,0 +1,112 @@
+diff --git a/src/components/AdminView.tsx b/src/components/AdminView.tsx
+index 8b3b5ae..f3c4ac4 100644
+--- a/src/components/AdminView.tsx
++++ b/src/components/AdminView.tsx
+@@ -434,7 +434,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
+                       isProd 
+                         ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                        : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                     }`}
+                   />
+                 </div>
+@@ -455,7 +455,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
+                       isProd 
+                         ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                        : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                     }`}
+                   />
+                 </div>
+@@ -531,7 +531,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
+                     isProd 
+                       ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                      : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                   }`}
+                 />
+               </div>
+@@ -549,7 +549,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
+                     isProd 
+                       ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                      : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                   }`}
+                 />
+               </div>
+@@ -575,7 +575,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                           isProd 
+                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                            : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                         }`}
+                       />
+                     </div>
+@@ -596,7 +596,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                           isProd 
+                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                            : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                         }`}
+                       />
+                     </div>
+@@ -617,7 +617,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                           isProd 
+                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
++                            : 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700'
+                         }`}
+                       />
+                     </div>
+@@ -732,7 +732,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                               className={`w-full p-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                 isProd 
+                                   ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                                  : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
++                                  : 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                               }`}
+                               placeholder="Type narrative description content here..."
+                             />
+@@ -764,7 +764,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                     isProd 
+                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
++                                      : 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                   }`}
+                                 />
+                               </div>
+@@ -779,7 +779,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                     isProd 
+                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
++                                      : 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                   }`}
+                                 />
+                               </div>
+@@ -808,7 +808,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                                 className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                   isProd 
+                                     ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                                    : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
++                                    : 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                 }`}
+                               />
+                             </div>
+@@ -822,7 +822,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
+                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
+                                     isProd 
+                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
+-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
++                                      : 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700'
+                                   }`}
+                                 />
+                               </div>
