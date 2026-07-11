@@ -33,15 +33,10 @@ const defaultPortfolio = {
 // Database persistence helpers
 function readDb() {
   try {
-    if (!fs.existsSync(dbPath)) {
-      return defaultPortfolio;
-    }
-    const data = fs.readFileSync(dbPath, "utf8");
-    const parsed = JSON.parse(data);
-    if (!parsed.assets) parsed.assets = [];
-    return parsed;
+    // This forces the bundler to include the JSON file in the Vercel build output
+    return require("./src/data/portfolio_db.json");
   } catch (err) {
-    console.error("DB Read Error:", err);
+    console.error("DB Read Error, falling back to default:", err);
     return defaultPortfolio;
   }
 }
