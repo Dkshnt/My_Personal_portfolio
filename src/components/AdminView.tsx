@@ -433,8 +433,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                     placeholder="dikshant9911@gmail.com"
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                       isProd 
-                        ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                        ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                        : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                     }`}
                   />
                 </div>
@@ -454,8 +454,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                     placeholder="••••••••"
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                       isProd 
-                        ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                        ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                        : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                     }`}
                   />
                 </div>
@@ -530,8 +530,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                   placeholder="Engineering a Sustainable Future."
                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                     isProd 
-                      ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                      ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                      : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                   }`}
                 />
               </div>
@@ -548,8 +548,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                   placeholder="Professional journey of Dikshant Dahiya..."
                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                     isProd 
-                      ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                      ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                      : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                   }`}
                 />
               </div>
@@ -574,8 +574,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         placeholder="https://linkedin.com"
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
-                            ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                            : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -595,8 +595,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         placeholder="https://github.com"
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
-                            ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                            : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -616,8 +616,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         placeholder="https://youtube.com"
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
-                            ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                            : 'bg-white border-neutral-850 text-neutral-900 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -731,8 +731,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                               rows={4}
                               className={`w-full p-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                                 isProd 
-                                  ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                  : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                  ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                                  : 'bg-white border-neutral-800 text-neutral-900 focus:ring-teal-400'
                               }`}
                               placeholder="Type narrative description content here..."
                             />
@@ -763,8 +763,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   placeholder="https://images.unsplash.com/photo-..."
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
-                                      ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                                      : 'bg-white border-neutral-800 text-neutral-900 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
@@ -778,8 +778,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   placeholder="Image Caption / Alt Title Label..."
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
-                                      ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                                      : 'bg-white border-neutral-800 text-neutral-900 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
@@ -807,8 +807,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                 placeholder="/uploads/Dikshant_Dahiya_Portfolio..."
                                 className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                   isProd 
-                                    ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                    : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                    ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                                    : 'bg-white border-neutral-800 text-neutral-900 focus:ring-teal-400'
                                 }`}
                               />
                             </div>
@@ -821,8 +821,8 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   placeholder="File Title Label (e.g. Audit SOP Program.pdf)..."
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
-                                      ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      ? 'bg-white border-sage-200 text-neutral-900 focus:ring-sage-700'
+                                      : 'bg-white border-neutral-800 text-neutral-900 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
