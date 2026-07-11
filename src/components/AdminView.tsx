@@ -16,7 +16,16 @@ interface AdminViewProps {
 }
 
 export default function AdminView({ mode, portfolio, onRefresh, onClose }: AdminViewProps) {
-  const isProd = mode === 'professional';
+  // We force a clean light theme for admin work
+  const adminTheme = {
+    bg: 'bg-slate-50',
+    text: 'text-slate-900',
+    card: 'bg-white',
+    border: 'border-slate-200',
+    input: 'bg-white border-slate-300 text-slate-900 focus:ring-teal-500 focus:border-teal-500',
+    label: 'text-slate-600',
+    subCard: 'bg-slate-50/50 border-slate-200'
+  };
 
   // Auth States
   const [email, setEmail] = useState('');
@@ -311,13 +320,13 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
 
   const ArrayField = ({ label, items, onAdd, onRemove, renderItem }: any) => (
     <div className="space-y-4">
-      <div className="flex justify-between items-center border-b border-neutral-800 pb-2">
-        <label className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-widest">{label}</label>
-        <button type="button" onClick={onAdd} className="p-1.5 bg-teal-500/10 text-teal-400 rounded-lg hover:bg-teal-500/20 transition-all"><Plus className="w-4 h-4" /></button>
+      <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+        <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>{label}</label>
+        <button type="button" onClick={onAdd} className="p-1.5 bg-teal-500/10 text-teal-600 rounded-lg hover:bg-teal-500/20 transition-all"><Plus className="w-4 h-4" /></button>
       </div>
       <div className="grid grid-cols-1 gap-4">
         {items.map((item: any, i: number) => (
-          <div key={i} className="relative p-4 rounded-2xl bg-black/20 border border-neutral-800 group">
+          <div key={i} className={`relative p-4 rounded-2xl ${adminTheme.subCard} group`}>
             <button type="button" onClick={() => onRemove(i)} className="absolute top-2 right-2 p-1.5 text-red-500 bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all"><X className="w-3.5 h-3.5" /></button>
             {renderItem(item, i)}
           </div>
@@ -327,58 +336,58 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
   );
 
   return (
-    <div className={`transition-colors duration-300 min-h-screen py-12 flex items-center justify-center ${isProd ? 'bg-sage-50 text-sage-950' : 'bg-obsidian-950 text-neutral-100'}`}>
+    <div className={`transition-colors duration-300 min-h-screen py-12 flex items-center justify-center ${adminTheme.bg} ${adminTheme.text}`}>
       <div className="max-w-5xl w-full px-4">
         
         <div className="mb-8 flex justify-between items-center">
-          <button onClick={onClose || (() => window.location.href = '/')} className={`flex items-center space-x-1 font-mono text-[10px] tracking-widest uppercase hover:underline ${isProd ? 'text-sage-700' : 'text-teal-400'}`}>
+          <button onClick={onClose || (() => window.location.href = '/')} className={`flex items-center space-x-1 font-mono text-[10px] tracking-widest uppercase hover:underline text-slate-500 hover:text-teal-600`}>
             <ArrowLeft className="w-3.5 h-3.5" /> <span>Back to Site</span>
           </button>
           <div className="flex items-center space-x-2">
-            <div className={`w-2 h-2 rounded-full ${token ? 'bg-emerald-500 animate-pulse' : 'bg-neutral-600'}`} />
-            <span className="font-mono text-[9px] text-neutral-500 uppercase tracking-tighter">Secure Admin Node</span>
+            <div className={`w-2 h-2 rounded-full ${token ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`} />
+            <span className="font-mono text-[9px] text-slate-400 uppercase tracking-tighter">Secure Admin Node</span>
           </div>
         </div>
 
         {!token ? (
-          <div className={`rounded-[2.5rem] border p-8 sm:p-12 shadow-2xl max-w-md mx-auto relative overflow-hidden ${isProd ? 'bg-white border-sage-200' : 'bg-obsidian-900 border-neutral-800'}`}>
-            <div className="absolute top-0 right-0 p-8 opacity-5"><Shield className="w-32 h-32" /></div>
+          <div className={`rounded-[2.5rem] border p-8 sm:p-12 shadow-2xl max-w-md mx-auto relative overflow-hidden bg-white border-slate-200`}>
+            <div className="absolute top-0 right-0 p-8 opacity-5 text-slate-200"><Shield className="w-32 h-32" /></div>
             <div className="flex justify-center mb-8">
-              <div className={`p-4 rounded-3xl border-2 ${isProd ? 'bg-sage-50 border-sage-100 text-sage-950' : 'bg-teal-500/5 border-teal-500/20 text-teal-400'}`}>
+              <div className={`p-4 rounded-3xl border-2 bg-slate-50 border-slate-100 text-slate-900`}>
                 <Lock className="w-8 h-8" />
               </div>
             </div>
             <h1 className="font-display font-black text-3xl tracking-tighter text-center uppercase mb-1">Login</h1>
-            <p className="text-[10px] font-mono text-center text-neutral-500 uppercase tracking-widest mb-10">Access restricted to authorized personnel</p>
+            <p className="text-[10px] font-mono text-center text-slate-500 uppercase tracking-widest mb-10">Access restricted to authorized personnel</p>
             {error && <div className="mb-8 p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs flex items-center space-x-3"><AlertTriangle className="w-5 h-5 flex-shrink-0" /><span>{error}</span></div>}
             <form onSubmit={handleLogin} className="space-y-6">
               <div className="space-y-2">
-                <label className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-widest ml-1">Admin Email</label>
-                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs focus:ring-1 focus:ring-teal-500 outline-none transition-all" placeholder="name@domain.com" />
+                <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest ml-1">Admin Email</label>
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-5 py-4 rounded-2xl border border-slate-300 bg-white text-slate-900 text-xs focus:ring-1 focus:ring-teal-500 outline-none transition-all" placeholder="name@domain.com" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-mono font-bold text-neutral-400 uppercase tracking-widest ml-1">Access Password</label>
-                <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs focus:ring-1 focus:ring-teal-500 outline-none transition-all" placeholder="••••••••" />
+                <label className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest ml-1">Access Password</label>
+                <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)} className="w-full px-5 py-4 rounded-2xl border border-slate-300 bg-white text-slate-900 text-xs focus:ring-1 focus:ring-teal-500 outline-none transition-all" placeholder="••••••••" />
               </div>
-              <button type="submit" disabled={loading} className={`w-full py-5 rounded-2xl font-display text-xs font-black uppercase tracking-widest transition-all ${loading ? 'bg-neutral-800 text-neutral-500' : 'bg-teal-500 text-obsidian-950 hover:scale-[1.02] active:scale-[0.98]'}`}>{loading ? 'Verifying...' : 'Authorize Terminal'}</button>
+              <button type="submit" disabled={loading} className={`w-full py-5 rounded-2xl font-display text-xs font-black uppercase tracking-widest transition-all ${loading ? 'bg-slate-200 text-slate-400' : 'bg-teal-500 text-white hover:bg-teal-600 active:scale-[0.98]'}`}>{loading ? 'Verifying...' : 'Authorize Terminal'}</button>
             </form>
           </div>
         ) : (
-          <div className={`rounded-[3rem] border p-4 sm:p-10 shadow-2xl relative ${isProd ? 'bg-white border-sage-200' : 'bg-obsidian-900 border-neutral-800'}`}>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-neutral-800/50 pb-6 mb-8 gap-4">
+          <div className={`rounded-[3rem] border p-4 sm:p-10 shadow-2xl relative bg-white border-slate-200`}>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 pb-6 mb-8 gap-4">
               <div className="flex items-center space-x-4">
-                <div className="p-3 bg-teal-500 rounded-2xl text-obsidian-950 shadow-[0_0_20px_rgba(20,184,166,0.4)]"><Layout className="w-6 h-6" /></div>
+                <div className="p-3 bg-teal-500 rounded-2xl text-white shadow-[0_0_20px_rgba(20,184,166,0.3)]"><Layout className="w-6 h-6" /></div>
                 <div>
-                  <h2 className="font-display font-black text-2xl tracking-tighter uppercase text-neutral-100">Site Customizer</h2>
-                  <p className="text-[9px] font-mono text-teal-400 uppercase tracking-widest">Active Administrative Session</p>
+                  <h2 className="font-display font-black text-2xl tracking-tighter uppercase text-slate-900">Site Customizer</h2>
+                  <p className="text-[9px] font-mono text-teal-600 uppercase tracking-widest">Active Administrative Session</p>
                 </div>
               </div>
-              <button onClick={handleLogout} className="flex items-center space-x-2 px-5 py-2.5 rounded-xl border border-red-500/20 bg-red-500/5 text-red-500 hover:bg-red-500/10 font-mono text-[10px] font-bold uppercase transition-all">
+              <button onClick={handleLogout} className="flex items-center space-x-2 px-5 py-2.5 rounded-xl border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 font-mono text-[10px] font-bold uppercase transition-all">
                 <LogOut className="w-4 h-4" /> <span>Sign Out</span>
               </button>
             </div>
 
-            <div className="sticky top-4 z-40 mb-12 flex items-center space-x-2 overflow-x-auto no-scrollbar bg-obsidian-950/80 backdrop-blur-xl p-2 rounded-2xl border border-neutral-800/50 shadow-xl">
+            <div className="sticky top-4 z-40 mb-12 flex items-center space-x-2 overflow-x-auto no-scrollbar bg-white/80 backdrop-blur-xl p-2 rounded-2xl border border-slate-200 shadow-lg">
               {[
                 { id: 'general', label: 'Identity', icon: Globe },
                 { id: 'blocks', label: 'Modular Blocks', icon: Layout },
@@ -387,11 +396,13 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                 { id: 'personal', label: 'Personal', icon: User },
                 { id: 'assets', label: 'Asset Vault', icon: Database }
               ].map(tab => (
-                <button key={tab.id} type="button" onClick={() => document.getElementById(`sec-${tab.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="whitespace-nowrap flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-neutral-900 hover:bg-teal-500 hover:text-obsidian-950 text-[10px] font-mono font-black uppercase tracking-wider text-neutral-400 transition-all">
+                <button key={tab.id} type="button" onClick={() => document.getElementById(`sec-${tab.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })} className="whitespace-nowrap flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-slate-50 hover:bg-teal-500 hover:text-white text-[10px] font-mono font-black uppercase tracking-wider text-slate-500 transition-all">
                   <tab.icon className="w-3.5 h-3.5" /> <span>{tab.label}</span>
                 </button>
               ))}
             </div>
+
+            {successMsg && <div className="mb-8 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs flex items-center space-x-3"><CheckCircle className="w-5 h-5 flex-shrink-0" /><span>{successMsg}</span></div>}
 
             <form onSubmit={handleSaveChanges} className="space-y-24">
               
@@ -399,42 +410,42 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
               <section id="sec-general" className="space-y-10 scroll-mt-32">
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-6 bg-blue-500 rounded-full" />
-                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-neutral-100">Global Branding</h3>
+                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-slate-900">Global Branding</h3>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2 md:col-span-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">Main Headline</label>
-                    <input type="text" value={headline} onChange={(e) => setHeadline(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs focus:ring-1 focus:ring-teal-500 outline-none" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Main Headline</label>
+                    <input type="text" value={headline} onChange={(e) => setHeadline(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none transition-all`} />
                   </div>
                   <div className="space-y-2 md:col-span-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">About / Bio Segment</label>
-                    <textarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs focus:ring-1 focus:ring-teal-500 outline-none leading-relaxed" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>About / Bio Segment</label>
+                    <textarea rows={4} value={bio} onChange={(e) => setBio(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none leading-relaxed transition-all`} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">Brand/Footer Name</label>
-                    <input type="text" value={footerName} onChange={(e) => setFooterName(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs outline-none" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Brand/Footer Name</label>
+                    <input type="text" value={footerName} onChange={(e) => setFooterName(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none transition-all`} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">Primary Contact Email</label>
-                    <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs outline-none" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Primary Contact Email</label>
+                    <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none transition-all`} />
                   </div>
                 </div>
 
-                <div className="p-8 rounded-[2rem] bg-black/40 border border-neutral-800/50 space-y-6">
-                  <h4 className="text-[10px] font-mono font-black text-neutral-400 uppercase tracking-widest mb-4">Social Media Handlers</h4>
+                <div className="p-8 rounded-[2rem] bg-slate-50 border border-slate-200 space-y-6">
+                  <h4 className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-widest mb-4">Social Media Handlers</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">LinkedIn</label>
-                      <input type="url" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                      <label className="text-[9px] font-mono font-bold text-slate-500 uppercase">LinkedIn</label>
+                      <input type="url" value={linkedin} onChange={(e) => setLinkedin(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border ${adminTheme.input} text-[10px] outline-none transition-all`} />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">GitHub</label>
-                      <input type="url" value={github} onChange={(e) => setGithub(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                      <label className="text-[9px] font-mono font-bold text-slate-500 uppercase">GitHub</label>
+                      <input type="url" value={github} onChange={(e) => setGithub(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border ${adminTheme.input} text-[10px] outline-none transition-all`} />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[9px] font-mono font-bold text-neutral-600 uppercase">YouTube</label>
-                      <input type="url" value={youtube} onChange={(e) => setYoutube(e.target.value)} className="w-full px-4 py-2.5 rounded-xl border bg-obsidian-900 border-neutral-800 text-[10px] outline-none focus:border-teal-500" />
+                      <label className="text-[9px] font-mono font-bold text-slate-500 uppercase">YouTube</label>
+                      <input type="url" value={youtube} onChange={(e) => setYoutube(e.target.value)} className={`w-full px-4 py-2.5 rounded-xl border ${adminTheme.input} text-[10px] outline-none transition-all`} />
                     </div>
                   </div>
                 </div>
@@ -442,64 +453,64 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
 
               {/* modular blocks section */}
               <section id="sec-blocks" className="space-y-10 scroll-mt-32">
-                <div className="flex items-center justify-between border-t border-neutral-800/50 pt-16">
+                <div className="flex items-center justify-between border-t border-slate-100 pt-16">
                   <div className="flex items-center space-x-3">
                     <div className="w-1.5 h-6 bg-teal-500 rounded-full" />
-                    <h3 className="font-display font-black text-xl tracking-tight uppercase text-neutral-100">Modular Content Core</h3>
+                    <h3 className="font-display font-black text-xl tracking-tight uppercase text-slate-900">Modular Content Core</h3>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-center gap-3 p-8 border-2 border-dashed border-neutral-800 rounded-[2.5rem] bg-black/10 hover:border-teal-500/20 transition-all group">
+                <div className="flex items-center justify-center gap-3 p-8 border-2 border-dashed border-slate-200 rounded-[2.5rem] bg-slate-50/50 hover:border-teal-500/20 transition-all group">
                    {['text', 'image', 'file_download', 'link'].map(type => (
-                    <button key={type} type="button" onClick={() => insertBlockAt(0, type as any)} className="px-5 py-3 text-[10px] font-mono font-black bg-neutral-900 rounded-2xl text-neutral-400 hover:bg-teal-500 hover:text-obsidian-950 transition-all uppercase tracking-tighter">+ {type.replace('_', ' ')}</button>
+                    <button key={type} type="button" onClick={() => insertBlockAt(0, type as any)} className="px-5 py-3 text-[10px] font-mono font-black bg-white border border-slate-200 rounded-2xl text-slate-500 hover:bg-teal-500 hover:text-white transition-all uppercase tracking-tighter shadow-sm">+ {type.replace('_', ' ')}</button>
                   ))}
                 </div>
 
                 <div className="space-y-8">
                   {blocks.sort((a,b) => a.sort_order - b.sort_order).map((block, index) => (
-                    <div key={block.id} className="group relative p-8 rounded-[2.5rem] border border-neutral-800 bg-black/30 hover:border-teal-500/30 transition-all shadow-lg">
+                    <div key={block.id} className="group relative p-8 rounded-[2.5rem] border border-slate-200 bg-white hover:border-teal-500/30 transition-all shadow-md">
                       <div className="absolute -left-4 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all">
-                        <div className="w-10 h-10 rounded-2xl bg-teal-500 text-obsidian-950 flex items-center justify-center text-sm font-black shadow-2xl">{index + 1}</div>
+                        <div className="w-10 h-10 rounded-2xl bg-teal-500 text-white flex items-center justify-center text-sm font-black shadow-xl">{index + 1}</div>
                       </div>
 
-                      <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-900">
+                      <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-50">
                         <div className="flex items-center space-x-4">
-                          <div className={`p-3 rounded-2xl ${block.type === 'text' ? 'bg-blue-500/10 text-blue-400' : block.type === 'image' ? 'bg-amber-500/10 text-amber-400' : 'bg-red-500/10 text-red-400'}`}>
+                          <div className={`p-3 rounded-2xl ${block.type === 'text' ? 'bg-blue-500/10 text-blue-600' : block.type === 'image' ? 'bg-amber-500/10 text-amber-600' : 'bg-red-500/10 text-red-600'}`}>
                             {block.type === 'text' ? <FileText className="w-5 h-5" /> : block.type === 'image' ? <UploadCloud className="w-5 h-5" /> : <LinkIcon className="w-5 h-5" />}
                           </div>
-                          <span className="text-xs font-mono font-black text-neutral-400 uppercase tracking-[0.2em]">{block.type.replace('_', ' ')}</span>
+                          <span className="text-xs font-mono font-black text-slate-400 uppercase tracking-[0.2em]">{block.type.replace('_', ' ')}</span>
                         </div>
                         <div className="flex items-center space-x-3">
-                          <button type="button" disabled={index === 0} onClick={() => moveBlock(index, 'up')} className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 disabled:opacity-20"><ChevronUp className="w-5 h-5" /></button>
-                          <button type="button" disabled={index === blocks.length-1} onClick={() => moveBlock(index, 'down')} className="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 disabled:opacity-20"><ChevronDown className="w-5 h-5" /></button>
-                          <button type="button" onClick={() => deleteBlock(block.id)} className="p-2 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all ml-4"><Trash2 className="w-5 h-5" /></button>
+                          <button type="button" disabled={index === 0} onClick={() => moveBlock(index, 'up')} className="p-2 rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-20 transition-all"><ChevronUp className="w-5 h-5" /></button>
+                          <button type="button" disabled={index === blocks.length-1} onClick={() => moveBlock(index, 'down')} className="p-2 rounded-xl bg-slate-50 text-slate-400 hover:bg-slate-100 disabled:opacity-20 transition-all"><ChevronDown className="w-5 h-5" /></button>
+                          <button type="button" onClick={() => deleteBlock(block.id)} className="p-2 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all ml-4"><Trash2 className="w-5 h-5" /></button>
                         </div>
                       </div>
 
                       <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-1.5">
-                          <label className="text-[9px] font-mono font-black text-neutral-600 uppercase tracking-widest">Internal Label / Header</label>
-                          <input type="text" value={block.name || ''} onChange={(e) => updateBlockName(block.id, e.target.value)} className="w-full bg-obsidian-950 border border-neutral-850 rounded-2xl px-5 py-3 text-xs outline-none focus:border-teal-500 transition-all" />
+                          <label className="text-[9px] font-mono font-black text-slate-400 uppercase tracking-widest">Internal Label / Header</label>
+                          <input type="text" value={block.name || ''} onChange={(e) => updateBlockName(block.id, e.target.value)} className={`w-full border ${adminTheme.input} rounded-2xl px-5 py-3 text-xs outline-none transition-all`} />
                         </div>
                         {block.type === 'text' ? (
                           <div className="space-y-1.5">
-                            <label className="text-[9px] font-mono font-black text-neutral-600 uppercase tracking-widest">Narrative Payload</label>
-                            <textarea value={block.value} onChange={(e) => updateBlockValue(block.id, e.target.value)} rows={6} className="w-full bg-obsidian-950 border border-neutral-850 rounded-2xl px-5 py-4 text-xs leading-relaxed outline-none focus:border-teal-500 transition-all" />
+                            <label className="text-[9px] font-mono font-black text-slate-400 uppercase tracking-widest">Narrative Payload</label>
+                            <textarea value={block.value} onChange={(e) => updateBlockValue(block.id, e.target.value)} rows={6} className={`w-full border ${adminTheme.input} rounded-2xl px-5 py-4 text-xs leading-relaxed outline-none transition-all`} />
                           </div>
                         ) : (
                           <div className="space-y-1.5">
-                            <label className="text-[9px] font-mono font-black text-neutral-600 uppercase tracking-widest">Target Resource Path/URL</label>
+                            <label className="text-[9px] font-mono font-black text-slate-400 uppercase tracking-widest">Target Resource Path/URL</label>
                             <div className="flex gap-4">
-                              <input type="text" value={block.value} onChange={(e) => updateBlockValue(block.id, e.target.value)} className="flex-grow bg-obsidian-950 border border-neutral-850 rounded-2xl px-5 py-3 text-xs outline-none" />
-                              <button type="button" onClick={() => handleBlockUpload(block.id, block.type === 'image' ? "image/*" : "*/*")} className="px-6 py-3 bg-teal-500 text-obsidian-950 rounded-2xl font-black text-[10px] uppercase tracking-tighter hover:scale-[1.05] transition-all"><UploadCloud className="w-5 h-5" /></button>
+                              <input type="text" value={block.value} onChange={(e) => updateBlockValue(block.id, e.target.value)} className={`flex-grow border ${adminTheme.input} rounded-2xl px-5 py-3 text-xs outline-none transition-all`} />
+                              <button type="button" onClick={() => handleBlockUpload(block.id, block.type === 'image' ? "image/*" : "*/*")} className="px-6 py-3 bg-teal-500 text-white rounded-2xl font-black text-[10px] uppercase tracking-tighter hover:bg-teal-600 transition-all shadow-md flex items-center gap-2"><UploadCloud className="w-4 h-4" /> <span>Upload</span></button>
                             </div>
                           </div>
                         )}
                       </div>
 
-                      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 p-2 bg-neutral-900 rounded-[1.25rem] border-2 border-teal-500/30 z-10 shadow-2xl">
+                      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all flex items-center gap-2 p-2 bg-white rounded-[1.25rem] border border-slate-200 z-10 shadow-xl">
                         {['text', 'image', 'file_download', 'link'].map(type => (
-                          <button key={type} type="button" onClick={() => insertBlockAt(index + 1, type as any)} className="px-4 py-2 text-[9px] font-mono font-black bg-obsidian-950 rounded-xl text-teal-400 hover:bg-teal-500 hover:text-obsidian-950 transition-all uppercase tracking-tighter">+ {type.split('_')[0]}</button>
+                          <button key={type} type="button" onClick={() => insertBlockAt(index + 1, type as any)} className="px-4 py-2 text-[9px] font-mono font-black bg-slate-50 rounded-xl text-teal-600 hover:bg-teal-500 hover:text-white transition-all uppercase tracking-tighter border border-slate-100">+ {type.split('_')[0]}</button>
                         ))}
                       </div>
                     </div>
@@ -508,20 +519,20 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
               </section>
 
               {/* professional deep settings */}
-              <section id="sec-prof" className="space-y-16 border-t border-neutral-800/50 pt-16 scroll-mt-32">
+              <section id="sec-prof" className="space-y-16 border-t border-slate-100 pt-16 scroll-mt-32">
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
-                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-neutral-100">Professional Pipeline</h3>
+                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-slate-900">Professional Pipeline</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">Hero Navigation Tag</label>
-                    <input type="text" value={professionalHeroTag} onChange={(e) => setProfessionalHeroTag(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs outline-none" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Hero Navigation Tag</label>
+                    <input type="text" value={professionalHeroTag} onChange={(e) => setProfessionalHeroTag(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none transition-all`} />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-mono font-bold text-neutral-500 uppercase tracking-widest">Infrastructure Module Title</label>
-                    <input type="text" value={infrastructureTitle} onChange={(e) => setInfrastructureTitle(e.target.value)} className="w-full px-5 py-4 rounded-2xl border bg-obsidian-950 border-neutral-850 text-xs outline-none" />
+                    <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Infrastructure Module Title</label>
+                    <input type="text" value={infrastructureTitle} onChange={(e) => setInfrastructureTitle(e.target.value)} className={`w-full px-5 py-4 rounded-2xl border ${adminTheme.input} text-xs outline-none transition-all`} />
                   </div>
                 </div>
 
@@ -529,91 +540,106 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
                   <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-1">
-                        <label className="text-[8px] font-mono text-neutral-600 uppercase">Organization</label>
-                        <input type="text" value={ms.company} onChange={(e) => updateMilestone(ms.id, 'company', e.target.value)} className="w-full bg-transparent border-b border-neutral-800 text-xs font-bold py-2 outline-none" />
+                        <label className="text-[8px] font-mono text-slate-400 uppercase">Organization</label>
+                        <input type="text" value={ms.company} onChange={(e) => updateMilestone(ms.id, 'company', e.target.value)} className="w-full bg-transparent border-b border-slate-200 text-xs font-bold py-2 outline-none text-slate-900 focus:border-teal-500" />
                       </div>
                       <div className="space-y-1">
-                        <label className="text-[8px] font-mono text-neutral-600 uppercase">Designation</label>
-                        <input type="text" value={ms.role} onChange={(e) => updateMilestone(ms.id, 'role', e.target.value)} className="w-full bg-transparent border-b border-neutral-800 text-xs py-2 outline-none" />
+                        <label className="text-[8px] font-mono text-slate-400 uppercase">Designation</label>
+                        <input type="text" value={ms.role} onChange={(e) => updateMilestone(ms.id, 'role', e.target.value)} className="w-full bg-transparent border-b border-slate-200 text-xs py-2 outline-none text-slate-900 focus:border-teal-500" />
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-6">
-                       <input type="text" value={ms.period} onChange={(e) => updateMilestone(ms.id, 'period', e.target.value)} placeholder="Period" className="bg-black/20 p-3 rounded-xl text-[10px] outline-none" />
-                       <input type="text" value={ms.location} onChange={(e) => updateMilestone(ms.id, 'location', e.target.value)} placeholder="Location" className="bg-black/20 p-3 rounded-xl text-[10px] outline-none" />
+                       <div className="space-y-1">
+                         <label className="text-[8px] font-mono text-slate-400 uppercase">Period</label>
+                         <input type="text" value={ms.period} onChange={(e) => updateMilestone(ms.id, 'period', e.target.value)} className={`w-full bg-white border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-900`} />
+                       </div>
+                       <div className="space-y-1">
+                         <label className="text-[8px] font-mono text-slate-400 uppercase">Location</label>
+                         <input type="text" value={ms.location} onChange={(e) => updateMilestone(ms.id, 'location', e.target.value)} className={`w-full bg-white border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-900`} />
+                       </div>
                     </div>
-                    <textarea value={ms.summary} onChange={(e) => updateMilestone(ms.id, 'summary', e.target.value)} rows={3} placeholder="Full description..." className="w-full bg-black/40 border border-neutral-800 rounded-2xl p-4 text-[11px] outline-none leading-relaxed" />
+                    <div className="space-y-1">
+                      <label className="text-[8px] font-mono text-slate-400 uppercase">Experience Summary</label>
+                      <textarea value={ms.summary} onChange={(e) => updateMilestone(ms.id, 'summary', e.target.value)} rows={3} className="w-full bg-white border border-slate-200 rounded-2xl p-4 text-[11px] outline-none leading-relaxed text-slate-900" />
+                    </div>
                   </div>
                 )} />
 
                 <ArrayField label="Active ESG Metrics" items={esgMetrics} onAdd={addMetric} onRemove={removeMetric} renderItem={(m: any) => (
                   <div className="space-y-4">
-                    <input type="text" value={m.title} onChange={(e) => updateMetric(m.id, 'title', e.target.value)} className="w-full bg-transparent border-b border-neutral-800 text-xs font-bold py-1 outline-none" />
+                    <input type="text" value={m.title} onChange={(e) => updateMetric(m.id, 'title', e.target.value)} className="w-full bg-transparent border-b border-slate-200 text-xs font-bold py-1 outline-none text-slate-900 focus:border-teal-500" />
                     <div className="grid grid-cols-3 gap-4">
-                       <div className="space-y-1"><label className="text-[8px] text-neutral-700 font-mono uppercase">Current</label><input type="text" value={m.currentValue} onChange={(e) => updateMetric(m.id, 'currentValue', e.target.value)} className="w-full bg-black/40 p-3 rounded-xl text-[10px] outline-none" /></div>
-                       <div className="space-y-1"><label className="text-[8px] text-neutral-700 font-mono uppercase">Target</label><input type="text" value={m.targetValue} onChange={(e) => updateMetric(m.id, 'targetValue', e.target.value)} className="w-full bg-black/40 p-3 rounded-xl text-[10px] outline-none" /></div>
-                       <div className="space-y-1"><label className="text-[8px] text-neutral-700 font-mono uppercase">Progress %</label><input type="number" value={m.progressPercentage} onChange={(e) => updateMetric(m.id, 'progressPercentage', parseInt(e.target.value))} className="w-full bg-black/40 p-3 rounded-xl text-[10px] outline-none" /></div>
+                       <div className="space-y-1"><label className="text-[8px] text-slate-400 font-mono uppercase">Current</label><input type="text" value={m.currentValue} onChange={(e) => updateMetric(m.id, 'currentValue', e.target.value)} className="w-full bg-white border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-900" /></div>
+                       <div className="space-y-1"><label className="text-[8px] text-slate-400 font-mono uppercase">Target</label><input type="text" value={m.targetValue} onChange={(e) => updateMetric(m.id, 'targetValue', e.target.value)} className="w-full bg-white border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-900" /></div>
+                       <div className="space-y-1"><label className="text-[8px] text-slate-400 font-mono uppercase">Progress %</label><input type="number" value={m.progressPercentage} onChange={(e) => updateMetric(m.id, 'progressPercentage', parseInt(e.target.value))} className="w-full bg-white border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-900" /></div>
                     </div>
                   </div>
                 )} />
               </section>
 
               {/* skills and faqs */}
-              <section id="sec-skills" className="space-y-16 border-t border-neutral-800/50 pt-16 scroll-mt-32">
+              <section id="sec-skills" className="space-y-16 border-t border-slate-100 pt-16 scroll-mt-32">
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-6 bg-amber-500 rounded-full" />
-                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-neutral-100">Skills & Knowledge Base</h3>
+                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-slate-900">Skills & Knowledge Base</h3>
                 </div>
 
                 <ArrayField label="Technical Skill Matrix" items={skills} onAdd={addSkill} onRemove={removeSkill} renderItem={(s: any, i: number) => (
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                       <input type="text" value={s.name} onChange={(e) => updateSkill(i, 'name', e.target.value)} placeholder="Skill..." className="bg-transparent border-b border-neutral-800 text-xs font-bold py-1 outline-none" />
-                       <input type="text" value={s.category} onChange={(e) => updateSkill(i, 'category', e.target.value)} placeholder="Category..." className="bg-black/20 p-2 rounded-lg text-[9px] outline-none" />
+                       <input type="text" value={s.name} onChange={(e) => updateSkill(i, 'name', e.target.value)} placeholder="Skill..." className="bg-transparent border-b border-slate-200 text-xs font-bold py-1 outline-none text-slate-900 focus:border-teal-500" />
+                       <input type="text" value={s.category} onChange={(e) => updateSkill(i, 'category', e.target.value)} placeholder="Category..." className="bg-slate-100 border border-slate-200 p-2 rounded-lg text-[9px] outline-none text-slate-700" />
                     </div>
                     <div className="flex items-center gap-6">
                        <input type="range" value={s.score} onChange={(e) => updateSkill(i, 'score', parseInt(e.target.value))} className="flex-grow accent-teal-500" />
-                       <span className="text-[10px] font-mono font-bold text-teal-400 w-8">{s.score}%</span>
+                       <span className="text-[10px] font-mono font-bold text-teal-600 w-8">{s.score}%</span>
                     </div>
                   </div>
                 )} />
 
                 <ArrayField label="Methodology FAQs" items={faqs} onAdd={addFaq} onRemove={removeFaq} renderItem={(f: any, i: number) => (
                   <div className="space-y-3">
-                    <input type="text" value={f.q} onChange={(e) => updateFaq(i, 'q', e.target.value)} placeholder="Question?" className="w-full bg-transparent border-b border-neutral-800 text-xs font-bold py-1 outline-none" />
-                    <textarea value={f.a} onChange={(e) => updateFaq(i, 'a', e.target.value)} placeholder="Answer..." rows={2} className="w-full bg-black/20 p-3 rounded-xl text-[10px] outline-none" />
+                    <input type="text" value={f.q} onChange={(e) => updateFaq(i, 'q', e.target.value)} placeholder="Question?" className="w-full bg-transparent border-b border-slate-200 text-xs font-bold py-1 outline-none text-slate-900 focus:border-teal-500" />
+                    <textarea value={f.a} onChange={(e) => updateFaq(i, 'a', e.target.value)} placeholder="Answer..." rows={2} className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-700" />
                   </div>
                 )} />
               </section>
 
               {/* personal section */}
-              <section id="sec-personal" className="space-y-16 border-t border-neutral-800/50 pt-16 scroll-mt-32">
+              <section id="sec-personal" className="space-y-16 border-t border-slate-100 pt-16 scroll-mt-32">
                 <div className="flex items-center space-x-3">
                   <div className="w-1.5 h-6 bg-purple-500 rounded-full" />
-                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-neutral-100">Personal Perspective</h3>
+                  <h3 className="font-display font-black text-xl tracking-tight uppercase text-slate-900">Personal Perspective</h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   <div className="space-y-2"><label className="text-[10px] font-mono text-neutral-500 uppercase">Hero Tag</label><input type="text" value={personalHeroTag} onChange={(e) => setPersonalHeroTag(e.target.value)} className="w-full bg-obsidian-950 border border-neutral-850 p-4 rounded-2xl text-xs outline-none" /></div>
-                   <div className="space-y-2"><label className="text-[10px] font-mono text-neutral-500 uppercase">YouTube Brand</label><input type="text" value={youtubeChannelName} onChange={(e) => setYoutubeChannelName(e.target.value)} className="w-full bg-obsidian-950 border border-neutral-850 p-4 rounded-2xl text-xs outline-none" /></div>
+                   <div className="space-y-2">
+                     <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>Hero Tag</label>
+                     <input type="text" value={personalHeroTag} onChange={(e) => setPersonalHeroTag(e.target.value)} className={`w-full border ${adminTheme.input} p-4 rounded-2xl text-xs outline-none transition-all`} />
+                   </div>
+                   <div className="space-y-2">
+                     <label className={`text-[10px] font-mono font-bold ${adminTheme.label} uppercase tracking-widest`}>YouTube Brand</label>
+                     <input type="text" value={youtubeChannelName} onChange={(e) => setYoutubeChannelName(e.target.value)} className={`w-full border ${adminTheme.input} p-4 rounded-2xl text-xs outline-none transition-all`} />
+                   </div>
                 </div>
 
                 <ArrayField label="Curiosity Metrics" items={personalStats} onAdd={addStat} onRemove={removeStat} renderItem={(s: any, i: number) => (
                   <div className="space-y-3">
                     <div className="flex gap-4">
-                       <input type="text" value={s.label} onChange={(e) => updateStat(i, 'label', e.target.value)} placeholder="Metric Label" className="w-2/3 bg-transparent border-b border-neutral-800 text-xs font-bold py-1 outline-none" />
-                       <input type="text" value={s.value} onChange={(e) => updateStat(i, 'value', e.target.value)} placeholder="Value" className="w-1/3 bg-black/40 text-teal-400 font-black p-2 rounded-xl text-xs outline-none" />
+                       <input type="text" value={s.label} onChange={(e) => updateStat(i, 'label', e.target.value)} placeholder="Metric Label" className="w-2/3 bg-transparent border-b border-slate-200 text-xs font-bold py-1 outline-none text-slate-900" />
+                       <input type="text" value={s.value} onChange={(e) => updateStat(i, 'value', e.target.value)} placeholder="Value" className="w-1/3 bg-slate-100 text-teal-600 font-black p-2 rounded-xl text-xs outline-none" />
                     </div>
-                    <textarea value={s.description} onChange={(e) => updateStat(i, 'description', e.target.value)} placeholder="Short desc..." className="w-full bg-black/20 p-3 rounded-xl text-[10px] outline-none" />
+                    <textarea value={s.description} onChange={(e) => updateStat(i, 'description', e.target.value)} placeholder="Short desc..." className="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-[10px] outline-none text-slate-600" />
                   </div>
                 )} />
 
                 <div className="space-y-8">
-                  <h4 className="text-[10px] font-mono font-black text-neutral-500 uppercase tracking-[0.2em] border-b border-neutral-800 pb-2">Ancient Geologies (Jyotirlingas)</h4>
+                  <h4 className="text-[10px] font-mono font-black text-slate-400 uppercase tracking-[0.2em] border-b border-slate-100 pb-2">Ancient Geologies (Jyotirlingas)</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     {jyotirlingas.map((j) => (
-                      <div key={j.id} className="p-5 rounded-3xl bg-black/20 border border-neutral-800 space-y-3">
-                        <div className="font-black text-xs text-neutral-300 flex justify-between"><span>{j.name}</span><span className="text-[8px] opacity-40">{j.state}</span></div>
-                        <textarea value={j.deitySpec} onChange={(e) => updateJyotirlinga(j.id, 'deitySpec', e.target.value)} rows={3} className="w-full bg-transparent text-[10px] leading-relaxed outline-none border-t border-neutral-800/50 pt-2" />
+                      <div key={j.id} className="p-5 rounded-3xl bg-slate-50 border border-slate-200 space-y-3">
+                        <div className="font-black text-xs text-slate-900 flex justify-between"><span>{j.name}</span><span className="text-[8px] opacity-40 uppercase">{j.state}</span></div>
+                        <textarea value={j.deitySpec} onChange={(e) => updateJyotirlinga(j.id, 'deitySpec', e.target.value)} rows={3} className="w-full bg-white border border-slate-100 rounded-xl text-[10px] leading-relaxed outline-none p-2 text-slate-700 focus:border-teal-500 transition-all" />
                       </div>
                     ))}
                   </div>
@@ -622,7 +648,7 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
 
               {/* SAVE ACTION */}
               <div className="sticky bottom-6 z-50">
-                <button type="submit" disabled={loading} className={`w-full py-6 rounded-[2rem] font-display text-base font-black uppercase tracking-widest transition-all flex items-center justify-center space-x-4 shadow-[0_20px_50px_rgba(20,184,166,0.3)] ${loading ? 'bg-neutral-800 text-neutral-500' : 'bg-teal-500 text-obsidian-950 hover:scale-[1.01] active:scale-[0.99]'}`}>
+                <button type="submit" disabled={loading} className={`w-full py-6 rounded-[2rem] font-display text-base font-black uppercase tracking-widest transition-all flex items-center justify-center space-x-4 shadow-[0_20px_50px_rgba(20,184,166,0.2)] ${loading ? 'bg-slate-200 text-slate-400' : 'bg-teal-500 text-white hover:scale-[1.01] hover:bg-teal-600 active:scale-[0.99]'}`}>
                   <Save className="w-6 h-6" /> <span>{loading ? 'Securing Pipeline...' : 'Commit Changes to Database'}</span>
                 </button>
               </div>
@@ -632,32 +658,32 @@ export default function AdminView({ mode, portfolio, onRefresh, onClose }: Admin
             {/* asset vault section */}
             <section id="sec-assets" className="mt-32 pt-24 border-t-2 border-teal-500/20 space-y-12">
               <div className="flex items-center space-x-3">
-                <div className="p-3 bg-teal-500/10 rounded-2xl text-teal-400"><Database className="w-6 h-6" /></div>
-                <h3 className="font-display font-black text-2xl tracking-tight uppercase text-neutral-100">Asset Warehouse</h3>
+                <div className="p-3 bg-teal-500/10 rounded-2xl text-teal-600"><Database className="w-6 h-6" /></div>
+                <h3 className="font-display font-black text-2xl tracking-tight uppercase text-slate-900">Asset Warehouse</h3>
               </div>
 
-              <div onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={(e) => { e.preventDefault(); setDragOver(false); if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }} onClick={() => fileInputRef.current?.click()} className={`border-2 border-dashed rounded-[3rem] p-16 text-center cursor-pointer transition-all ${dragOver ? 'border-teal-400 bg-teal-400/5 scale-[1.01]' : 'border-neutral-800 hover:border-neutral-700 bg-black/20'}`}>
+              <div onDragOver={(e) => { e.preventDefault(); setDragOver(true); }} onDragLeave={() => setDragOver(false)} onDrop={(e) => { e.preventDefault(); setDragOver(false); if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]); }} onClick={() => fileInputRef.current?.click()} className={`border-2 border-dashed rounded-[3rem] p-16 text-center cursor-pointer transition-all ${dragOver ? 'border-teal-400 bg-teal-400/5 scale-[1.01]' : 'border-slate-200 hover:border-teal-500/20 bg-slate-50'}`}>
                 <input type="file" ref={fileInputRef} onChange={(e) => e.target.files?.[0] && processFile(e.target.files[0])} className="hidden" />
-                <UploadCloud className={`w-16 h-16 mx-auto mb-6 ${uploading ? 'animate-bounce text-teal-400' : 'text-neutral-700'}`} />
-                <p className="font-display font-black text-sm uppercase tracking-widest text-neutral-200">{uploading ? 'Transferring Data...' : 'Drop Assets or Click to Browse'}</p>
-                <p className="text-[10px] font-mono text-neutral-500 mt-4 uppercase tracking-widest">Validated formats: PNG, JPG, PDF, SVG (Max 45MB)</p>
+                <UploadCloud className={`w-16 h-16 mx-auto mb-6 ${uploading ? 'animate-bounce text-teal-500' : 'text-slate-300'}`} />
+                <p className="font-display font-black text-sm uppercase tracking-widest text-slate-900">{uploading ? 'Transferring Data...' : 'Drop Assets or Click to Browse'}</p>
+                <p className="text-[10px] font-mono text-slate-500 mt-4 uppercase tracking-widest">Validated formats: PNG, JPG, PDF, SVG (Max 45MB)</p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {portfolio.assets?.map((asset, i) => (
-                  <div key={i} className="p-6 rounded-[2rem] border border-neutral-800 bg-black/30 hover:bg-black/50 transition-all space-y-6 group">
+                  <div key={i} className="p-6 rounded-[2rem] border border-slate-200 bg-white hover:border-teal-500/20 transition-all space-y-6 group shadow-sm">
                     <div className="flex items-center space-x-4">
-                      <div className="w-14 h-14 rounded-2xl bg-neutral-900 flex items-center justify-center border border-neutral-800 overflow-hidden">
-                         {asset.type.includes('image') ? <img src={asset.url} className="w-full h-full object-cover" /> : <FileCode className="w-6 h-6 text-teal-500" />}
+                      <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 overflow-hidden">
+                         {asset.type.includes('image') ? <img src={asset.url} className="w-full h-full object-cover" /> : <FileCode className="w-6 h-6 text-teal-600" />}
                       </div>
                       <div className="overflow-hidden flex-grow">
-                        <div className="text-[11px] font-black text-neutral-200 truncate">{asset.name}</div>
-                        <div className="text-[9px] font-mono text-neutral-500 uppercase mt-1">{asset.size} • {asset.type.split('/')[1]}</div>
+                        <div className="text-[11px] font-black text-slate-900 truncate">{asset.name}</div>
+                        <div className="text-[9px] font-mono text-slate-500 uppercase mt-1">{asset.size} • {asset.type.split('/')[1]}</div>
                       </div>
                     </div>
                     <div className="flex gap-3 pt-2">
-                      <button type="button" onClick={() => copyToClipboard(asset.url)} className="flex-grow py-3 rounded-xl bg-neutral-800 text-[9px] font-black uppercase tracking-widest hover:bg-teal-500 hover:text-obsidian-950 transition-all">{copiedUrl === asset.url ? 'Copied!' : 'Copy Link'}</button>
-                      <button type="button" onClick={() => handleDeleteAsset(asset.url)} className="p-3 rounded-xl bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 className="w-4 h-4" /></button>
+                      <button type="button" onClick={() => copyToClipboard(asset.url)} className="flex-grow py-3 rounded-xl bg-slate-50 text-[9px] font-black uppercase tracking-widest hover:bg-teal-500 hover:text-white transition-all text-slate-600">{copiedUrl === asset.url ? 'Copied!' : 'Copy Link'}</button>
+                      <button type="button" onClick={() => handleDeleteAsset(asset.url)} className="p-3 rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"><Trash2 className="w-4 h-4" /></button>
                     </div>
                   </div>
                 ))}
