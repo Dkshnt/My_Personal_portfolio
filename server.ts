@@ -26,7 +26,7 @@ const defaultPortfolio = {
     {
       id: "block_1",
       type: "text",
-      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process sa[...]
+      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process safety engineering with high-fidelity ESG research and system audit standards.",
       sort_order: 10
     },
     {
@@ -39,7 +39,7 @@ const defaultPortfolio = {
     {
       id: "block_3",
       type: "text",
-      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) [...]
+      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) keeps organizational risk strictly mitigated.",
       sort_order: 30
     },
     {
@@ -295,6 +295,8 @@ async function startViteServer() {
       appType: "spa",
     });
     app.use(vite.middlewares);
+    
+    // Vite dev middleware handles all routing, including fallback to index.html
   } else {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
@@ -305,7 +307,7 @@ async function startViteServer() {
       if (fs.existsSync(indexPath)) {
         res.sendFile(indexPath);
       } else {
-        res.status(404).json({ error: "index.html not found" });
+        res.status(404).json({ error: "index.html not found in dist folder" });
       }
     });
   }
