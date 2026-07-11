@@ -1,4 +1,4 @@
-import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck } from 'lucide-react';
+import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck, Lock } from 'lucide-react';
 
 interface NavbarProps {
   mode: 'professional' | 'personal';
@@ -76,7 +76,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                       : isProd
                         ? 'text-sage-700 hover:bg-sage-100 hover:text-sage-950'
                         : 'text-neutral-400 hover:bg-neutral-800 hover:text-white'
-                  }`}
+                   }`}
                 >
                   <TabIcon className="w-3.5 h-3.5" />
                   <span>{tab.label}</span>
@@ -103,7 +103,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
             </button>
           </div>
 
-          {/* Mode Switch Panel */}
+          {/* Mode Switch Panel and Admin Button */}
           <div className="flex items-center space-x-3">
             <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-500 hidden sm:block">
               {isProd ? 'Professional' : 'Personal'}
@@ -136,6 +136,21 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                 )}
               </span>
             </button>
+
+            {/* Admin Access Button */}
+            <a
+              href="/admin"
+              id="admin-button"
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+                isProd 
+                  ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
+                  : 'bg-red-950 text-red-200 hover:bg-red-900'
+              }`}
+              title="Access Admin Panel"
+            >
+              <Lock className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Admin</span>
+            </a>
           </div>
 
         </div>
@@ -181,6 +196,21 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
               Connect
             </span>
           </button>
+          <a
+            href="/admin"
+            id="nav-mobile-admin-button"
+            className={`flex flex-col items-center space-y-1 py-1 px-3 rounded-md transition-all ${
+              isProd 
+                ? 'text-amber-800 hover:text-amber-900' 
+                : 'text-red-400 hover:text-red-300'
+            }`}
+            title="Access Admin Panel"
+          >
+            <Lock className="w-4 h-4" />
+            <span className="text-[9px] uppercase tracking-wider font-semibold font-display">
+              Admin
+            </span>
+          </a>
         </div>
 
       </div>
