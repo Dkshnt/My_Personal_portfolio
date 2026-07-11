@@ -434,7 +434,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                       isProd 
                         ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                        : 'bg-obsidian-900 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                     }`}
                   />
                 </div>
@@ -455,7 +455,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                     className={`w-full pl-10 pr-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                       isProd 
                         ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                        : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                        : 'bg-obsidian-900 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                     }`}
                   />
                 </div>
@@ -495,7 +495,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
 
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-1 px-3 py-1.5 rounded-lg border border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 font-mono text-[10px] tracking-wider uppercase transition-colors"
+                className="flex items-center space-x-1 px-3 py-1.5 rounded-lg border border-red-500/20 bg-red-500/10 text-red-500 hover:bg-red-500/20 font-mono text-[10px] tracking-wider uppercase"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span>Sign Out</span>
@@ -531,7 +531,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                     isProd 
                       ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                      : 'bg-obsidian-800 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                   }`}
                 />
               </div>
@@ -549,7 +549,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                   className={`w-full px-4 py-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                     isProd 
                       ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                      : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                      : 'bg-obsidian-800 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                   }`}
                 />
               </div>
@@ -575,7 +575,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            : 'bg-obsidian-800 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -596,7 +596,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            : 'bg-obsidian-800 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -617,7 +617,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         className={`w-full pl-9 pr-3 py-2 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                           isProd 
                             ? 'bg-sage-50 border-sage-200 text-sage-950 focus:ring-sage-700' 
-                            : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400'
+                            : 'bg-obsidian-800 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                         }`}
                       />
                     </div>
@@ -671,7 +671,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                         className={`p-5 rounded-2xl border transition-all ${
                           isProd 
                             ? 'bg-sage-100/40 border-sage-205' 
-                            : 'bg-obsidian-950/60 border-neutral-850'
+                            : 'bg-obsidian-800/60 border-neutral-800'
                         }`}
                       >
                         {/* Block Header Controls */}
@@ -732,7 +732,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                               className={`w-full p-3 rounded-xl border text-xs focus:ring-1 focus:outline-none transition-all ${
                                 isProd 
                                   ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                  : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                  : 'bg-obsidian-700 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                               }`}
                               placeholder="Type narrative description content here..."
                             />
@@ -764,7 +764,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      : 'bg-obsidian-700 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
@@ -779,14 +779,14 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      : 'bg-obsidian-700 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
                               <button
                                 type="button"
                                 onClick={() => handleBlockUpload(block.id, "image/*")}
-                                className="px-4 py-1.5 rounded-lg font-mono text-[10px] tracking-wider uppercase font-bold text-teal-400 bg-teal-950/55 hover:bg-teal-900/60 border border-teal-500/20 transition-colors flex items-center justify-center space-x-1"
+                                className="px-4 py-1.5 rounded-lg font-mono text-[10px] tracking-wider uppercase font-bold text-teal-400 bg-teal-950/55 hover:bg-teal-900/60 border border-teal-500/30"
                               >
                                 <span>Upload / Replace Image</span>
                               </button>
@@ -808,7 +808,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                 className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                   isProd 
                                     ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                    : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                    : 'bg-obsidian-700 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                                 }`}
                               />
                             </div>
@@ -822,14 +822,14 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                                   className={`w-full px-3 py-1.5 rounded-lg border text-xs focus:ring-1 focus:outline-none transition-all ${
                                     isProd 
                                       ? 'bg-white border-sage-200 text-sage-950 focus:ring-sage-700' 
-                                      : 'bg-obsidian-900 border-neutral-800 text-neutral-100 focus:ring-teal-400'
+                                      : 'bg-obsidian-700 border-neutral-700 text-neutral-100 focus:ring-teal-400'
                                   }`}
                                 />
                               </div>
                               <button
                                 type="button"
                                 onClick={() => handleBlockUpload(block.id, ".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx")}
-                                className="px-4 py-1.5 rounded-lg font-mono text-[10px] tracking-wider uppercase font-bold text-teal-400 bg-teal-950/55 hover:bg-teal-900/60 border border-teal-500/20 transition-colors flex items-center justify-center space-x-1"
+                                className="px-4 py-1.5 rounded-lg font-mono text-[10px] tracking-wider uppercase font-bold text-teal-400 bg-teal-950/55 hover:bg-teal-900/60 border border-teal-500/30"
                               >
                                 <span>Manage Files</span>
                               </button>
@@ -1011,7 +1011,7 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
                           className={`rounded-xl border p-4 flex flex-col justify-between space-y-4 transition-all duration-200 hover:shadow-sm ${
                             isProd 
                               ? 'bg-sage-50/65 hover:bg-sage-50 border-sage-100' 
-                              : 'bg-obsidian-950/60 hover:bg-obsidian-950/80 border-neutral-850'
+                              : 'bg-obsidian-800/60 hover:bg-obsidian-800/80 border-neutral-800'
                           }`}
                         >
                           <div className="flex items-start space-x-3.5">
