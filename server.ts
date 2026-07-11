@@ -1,13 +1,11 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { createServer as createViteServer } from "vite";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
@@ -26,286 +24,149 @@ const defaultPortfolio = {
     {
       id: "block_1",
       type: "text",
-      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process safety engineering with high-fidelity ESG research and system audit standards to eliminate anomalies across industrial processes.",
+      value: "Welcome to my dynamic ESG & Stewardship Portfolio.",
       sort_order: 10
-    },
-    {
-      id: "block_2",
-      type: "image",
-      value: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1200",
-      name: "High-Fidelity Assurance Audits",
-      sort_order: 20
-    },
-    {
-      id: "block_3",
-      type: "text",
-      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) keeps organizational risk strictly mitigated.",
-      sort_order: 30
-    },
-    {
-      id: "block_4",
-      type: "file_download",
-      value: "/uploads/Dikshant_Dahiya_Portfolio_Checklists.xlsx",
-      name: "Standard Audit Program & ESG Checklist Template.xlsx",
-      sort_order: 40
     }
   ] as any[]
 };
 
-// Helper to read database
+// Database persistence helpers
 function readDb() {
   try {
-    if (!fs.existsSync(dbPath)) {
-      // Ensure directory exists
-      fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-      fs.writeFileSync(dbPath, JSON.stringify(defaultPortfolio, null, 2), "utf8");
-      return defaultPortfolio;
-    }
-    const data = fs.readFileSync(dbPath, "utf8");
-    const parsed = JSON.parse(data);
-    if (!parsed.assets) {
-      parsed.assets = [];
-    }
-    if (!parsed.blocks) {
-      parsed.blocks = defaultPortfolio.blocks;
-    }
-    return parsed;
+    // This forces the bundler to include the JSON file in the Vercel build output
+    return require("./src/data/portfolio_db.json");
   } catch (err) {
-    console.error("Error reading database:", err);
+    console.error("DB Read Error, falling back to default:", err);
     return defaultPortfolio;
   }
 }
 
-// Helper to write database
-function writeDb(data: typeof defaultPortfolio) {
+function writeDb(data: any) {
   try {
-    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+    // Skip file system operations on Vercel as it's read-only
+    if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+      console.warn("Write attempted in production/vercel environment. Persistence skipped.");
+      return true;
+    }
+    const dir = path.dirname(dbPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf8");
     return true;
   } catch (err) {
-    console.error("Error writing to database:", err);
+    console.error("DB Write Error:", err);
     return false;
   }
 }
 
-// Get portfolio data
-app.get("/api/portfolio", (req, res) => {
-  const data = readDb();
-  res.json(data);
+// Health check
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "ok", vercel: !!process.env.VERCEL });
 });
 
-// Admin Login
+// API Endpoints
+app.get("/api/portfolio", (req, res) => {
+  res.status(200).json(readDb());
+});
+
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
-  
-  if (!email || !password) {
-    res.status(400).json({ error: "Email and password are required" });
-    return;
-  }
-
-  // Constrain email to the user's requested specific address
-  if (email.toLowerCase() !== "dikshant9911@gmail.com") {
-    res.status(401).json({ error: "Access denied. Unauthorized administrator account." });
-    return;
-  }
+  if (!email || !password) return res.status(400).json({ error: "Email and password are required" });
+  if (email.toLowerCase() !== "dikshant9911@gmail.com") return res.status(401).json({ error: "Access denied." });
 
   const configuredPassword = process.env.ADMIN_PASSWORD || "dikshant123";
-
   if (password === configuredPassword) {
-    // Return a simple secure-looking token
-    const token = Buffer.from(JSON.stringify({ email, exp: Date.now() + 86450000 })).toString("base64");
-    res.json({ token });
+    const token = Buffer.from(JSON.stringify({ email, exp: Date.now() + 86400000 })).toString("base64");
+    return res.status(200).json({ token });
   } else {
-    res.status(401).json({ error: "Incorrect administrator password" });
+    return res.status(401).json({ error: "Incorrect password" });
   }
 });
 
-// Save Portfolio Changes (Authenticated)
-app.post("/api/portfolio", (req, res) => {
+// Middleware for authenticated routes
+const authMiddleware = (req: any, res: any, next: any) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthenticated interface request" });
-    return;
-  }
-
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return res.status(401).json({ error: "Unauthorized" });
   const token = authHeader.split(" ")[1];
   try {
-    // Basic verification of our simple token
     const payload = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
-    if (payload.email !== "dikshant9911@gmail.com" || payload.exp < Date.now()) {
-      res.status(401).json({ error: "Invalid or expired session token" });
-      return;
-    }
-  } catch (err) {
-    res.status(401).json({ error: "Failed to decipher secure session token" });
-    return;
-  }
+    if (payload.email === "dikshant9911@gmail.com" && payload.exp > Date.now()) return next();
+  } catch (e) {}
+  return res.status(401).json({ error: "Invalid session" });
+};
 
-  const { headline, bio, linkedin, github, youtube, blocks } = req.body;
-
-  if (!headline || !bio) {
-    res.status(400).json({ error: "Headline and Bio content must not be empty" });
-    return;
-  }
-
-  const currentDb = readDb();
-  const updatedData = {
-    headline: String(headline),
-    bio: String(bio),
-    linkedin: String(linkedin || ""),
-    github: String(github || ""),
-    youtube: String(youtube || ""),
-    assets: currentDb.assets || [],
-    blocks: Array.isArray(blocks) ? blocks : (currentDb.blocks || [])
-  };
-
-  const success = writeDb(updatedData);
-  if (success) {
-    res.json({ success: true, data: updatedData });
-  } else {
-    res.status(500).json({ error: "Failure writing content updates directly to database storage" });
-  }
+app.post("/api/portfolio", authMiddleware, (req, res) => {
+  if (writeDb(req.body)) res.status(200).json({ success: true });
+  else res.status(500).json({ error: "Failed to update database" });
 });
 
-// Upload Asset (Authenticated)
-app.post("/api/upload", (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthenticated interface request" });
-    return;
-  }
-
-  const token = authHeader.split(" ")[1];
-  try {
-    const payload = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
-    if (payload.email !== "dikshant9911@gmail.com" || payload.exp < Date.now()) {
-      res.status(401).json({ error: "Invalid or expired session token" });
-      return;
-    }
-  } catch (err) {
-    res.status(401).json({ error: "Failed to decipher secure session token" });
-    return;
-  }
-
+app.post("/api/upload", authMiddleware, (req, res) => {
   const { filename, mimeType, base64Data, size } = req.body;
-
-  if (!filename || !mimeType || !base64Data) {
-    res.status(400).json({ error: "Missing uploaded asset components" });
-    return;
-  }
+  if (!filename || !mimeType || !base64Data) return res.status(400).json({ error: "Incomplete data" });
 
   try {
+    if (process.env.VERCEL) return res.status(403).json({ error: "Local uploads not supported on Vercel." });
+
     const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
     const buffer = Buffer.from(cleanBase64, "base64");
-
-    const ext = path.extname(filename) || "." + mimeType.split("/")[1] || "";
-    const baseName = path.basename(filename, ext).replace(/[^a-zA-Z0-9_-]/g, "_");
-    const uniqueName = `${baseName}_${Date.now()}${ext}`;
-
+    const uniqueName = `${path.basename(filename, path.extname(filename))}_${Date.now()}${path.extname(filename)}`;
     const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir, { recursive: true });
-    }
 
-    const filePath = path.join(uploadsDir, uniqueName);
-    fs.writeFileSync(filePath, buffer);
+    if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+    fs.writeFileSync(path.join(uploadsDir, uniqueName), buffer);
 
-    const liveUrl = `/uploads/${uniqueName}`;
+    const db = readDb();
+    const newAsset = { name: filename, url: `/uploads/${uniqueName}`, size: size || `${(buffer.length/1024).toFixed(1)}KB`, type: mimeType, createdAt: new Date().toISOString() };
+    db.assets.push(newAsset);
+    writeDb(db);
 
-    const currentDb = readDb();
-    if (!currentDb.assets) {
-      currentDb.assets = [];
-    }
-
-    const newAsset = {
-      name: filename,
-      url: liveUrl,
-      size: size || `${(buffer.length / 1024).toFixed(1)} KB`,
-      type: mimeType,
-      createdAt: new Date().toISOString()
-    };
-
-    currentDb.assets.push(newAsset);
-    writeDb(currentDb);
-
-    res.json({ success: true, asset: newAsset });
+    res.status(200).json({ success: true, asset: newAsset });
   } catch (err) {
-    console.error("Upload error:", err);
-    res.status(500).json({ error: "Failed to store uploaded asset safely on container" });
+    res.status(500).json({ error: "Upload failed" });
   }
 });
 
-// Delete Asset (Authenticated)
-app.delete("/api/assets", (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    res.status(401).json({ error: "Unauthenticated request" });
-    return;
-  }
-
-  const token = authHeader.split(" ")[1];
-  try {
-    const payload = JSON.parse(Buffer.from(token, "base64").toString("utf8"));
-    if (payload.email !== "dikshant9911@gmail.com" || payload.exp < Date.now()) {
-      res.status(401).json({ error: "Session expired or invalid" });
-      return;
-    }
-  } catch (err) {
-    res.status(401).json({ error: "Invalid token structure" });
-    return;
-  }
-
+app.delete("/api/assets", authMiddleware, (req, res) => {
   const { url } = req.body;
-  if (!url) {
-    res.status(400).json({ error: "Missing asset identifier URL" });
-    return;
-  }
+  if (!url) return res.status(400).json({ error: "Missing URL" });
+  if (process.env.VERCEL) return res.status(403).json({ error: "Local deletes not supported on Vercel." });
 
-  try {
-    const currentDb = readDb();
-    if (currentDb.assets) {
-      const assetToDelete = currentDb.assets.find((a: any) => a.url === url);
-      if (assetToDelete) {
-        // Try deleting local file
-        const filename = path.basename(url);
-        const filePath = path.join(process.cwd(), "public", "uploads", filename);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-
-        // Remove from db tracking
-        currentDb.assets = currentDb.assets.filter((a: any) => a.url !== url);
-        writeDb(currentDb);
-        res.json({ success: true });
-        return;
-      }
-    }
-    res.status(404).json({ error: "Asset not found in database tracker" });
-  } catch (err) {
-    console.error("Delete asset error:", err);
-    res.status(500).json({ error: "Failed to release the requested file" });
+  const db = readDb();
+  const asset = db.assets.find((a: any) => a.url === url);
+  if (asset) {
+    const filePath = path.join(process.cwd(), "public", "uploads", path.basename(url));
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    db.assets = db.assets.filter((a: any) => a.url !== url);
+    writeDb(db);
+    return res.status(200).json({ success: true });
   }
+  res.status(404).json({ error: "Asset not found" });
 });
 
-// Setup Vite Dev server or Serve production assets
-async function startViteServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
-    });
-  }
+// Explicitly handle 404s for /api/* to prevent falling back to HTML
+app.use("/api/*", (req, res) => {
+  res.status(404).json({ error: `API endpoint ${req.originalUrl} not found` });
+});
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening at http://0.0.0.0:${PORT}`);
-  });
+export default app;
+
+// Setup local server if not on Vercel
+if (!process.env.VERCEL) {
+  const PORT = Number(process.env.PORT) || 3000;
+  const startServer = async () => {
+    if (process.env.NODE_ENV !== "production") {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({ server: { middlewareMode: true }, appType: "spa" });
+      app.use(vite.middlewares);
+    } else {
+      const distPath = path.join(process.cwd(), "dist");
+      app.use(express.static(distPath));
+      app.get("*", (req, res) => {
+        // Double check it's not an API route that missed the 404 handler
+        if (req.path.startsWith("/api/")) return;
+        res.sendFile(path.join(distPath, "index.html"));
+      });
+    }
+    app.listen(PORT, "0.0.0.0", () => console.log(`[SYSTEM] Server listening at http://localhost:${PORT}`));
+  };
+  startServer();
 }
-
-startViteServer();

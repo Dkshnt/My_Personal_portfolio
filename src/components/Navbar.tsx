@@ -1,13 +1,16 @@
-import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck } from 'lucide-react';
+import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck, Shield } from 'lucide-react';
+import { PortfolioData } from '../types';
 
 interface NavbarProps {
   mode: 'professional' | 'personal';
   setMode: (mode: 'professional' | 'personal') => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  setShowAdmin: (val: boolean) => void;
+  portfolio: PortfolioData;
 }
 
-export default function Navbar({ mode, setMode, activeTab, setActiveTab }: NavbarProps) {
+export default function Navbar({ mode, setMode, activeTab, setActiveTab, setShowAdmin, portfolio }: NavbarProps) {
   const isProd = mode === 'professional';
 
   // Available tabs depends on the mode
@@ -41,19 +44,21 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                 ? 'bg-sage-700 text-white shadow-sm' 
                 : 'bg-teal-500 text-obsidian-950 shadow-[0_0_15px_rgba(20,184,166,0.3)]'
             }`}>
-              D
+              {(portfolio.footerName || "Dikshant Dahiya")[0]}
               <div className={`absolute -bottom-1 -right-1 w-3 h-3 rounded-full border ${
                 isProd ? 'bg-emerald-500 border-sage-50' : 'bg-amber-400 border-obsidian-950'
               }`} />
             </div>
             <div>
               <span className="font-display font-semibold text-lg tracking-tight block">
-                Dikshant Dahiya
+                {portfolio.footerName || "Dikshant Dahiya"}
               </span>
               <span className={`text-[10px] font-mono leading-none tracking-wider uppercase block ${
                 isProd ? 'text-sage-700' : 'text-teal-400'
               }`}>
-                {isProd ? 'Stewardship & ESG Quality' : 'The Creative Duality Lab'}
+                {isProd
+                  ? (portfolio.navProfessionalTitle || "Stewardship & ESG Quality")
+                  : (portfolio.navPersonalTitle || "The Creative Duality Lab")}
               </span>
             </div>
           </div>
@@ -135,6 +140,21 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                   <Moon className="w-3.5 h-3.5 text-teal-400 fill-teal-400" />
                 )}
               </span>
+            </button>
+
+            {/* Admin Access Button */}
+            <button
+              id="admin-login-shield-btn"
+              onClick={() => setShowAdmin(true)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg border transition-all hover:scale-105 ${
+                isProd
+                  ? 'bg-sage-100 border-sage-200 text-sage-700 hover:bg-sage-200'
+                  : 'bg-neutral-800 border-neutral-700 text-neutral-400 hover:bg-neutral-700 hover:text-teal-400'
+              }`}
+              title="Admin Control Console"
+            >
+              <Shield className="w-4 h-4" />
+              <span className="text-[10px] font-mono font-bold tracking-widest uppercase hidden lg:block">Admin</span>
             </button>
           </div>
 

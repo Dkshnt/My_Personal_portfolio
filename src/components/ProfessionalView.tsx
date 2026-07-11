@@ -21,7 +21,8 @@ import {
   Check,
   TrendingUp,
   LineChart,
-  ShieldAlert
+  ShieldAlert,
+  ExternalLink
 } from 'lucide-react';
 
 interface ProfessionalViewProps {
@@ -42,9 +43,13 @@ export default function ProfessionalView({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
-  const selectedMilestone = EXPERIENCE_MILESTONES.find(m => m.id === selectedMilestoneId) || EXPERIENCE_MILESTONES[0];
+  const currentMilestones = portfolio.milestones || EXPERIENCE_MILESTONES;
+  const currentCertifications = portfolio.certifications || CERTIFICATIONS_LIST;
+  const currentEsgMetrics = portfolio.esgMetrics || ESG_METRICS_INFO;
 
-  const skillsData = [
+  const selectedMilestone = currentMilestones.find(m => m.id === selectedMilestoneId) || currentMilestones[0];
+
+  const skillsData = portfolio.skills || [
     { name: 'BRSR Disclosures', category: 'ESG & Sustainability', score: 95, desc: 'India SEC mandated Business Responsibility & Sustainability Reporting frameworks.' },
     { name: 'ESG Risk Analytics', category: 'ESG & Sustainability', score: 90, desc: 'Material ESG risk identification & portfolio risk analytics.' },
     { name: 'Sovereign ESG Auditing', category: 'ESG & Sustainability', score: 85, desc: 'Sovereign-level ESG risk evaluations and research oversight.' },
@@ -61,7 +66,7 @@ export default function ProfessionalView({
     : skillsData.filter(s => s.category.toLowerCase().includes(selectedCategory.toLowerCase()) || selectedCategory.toLowerCase().includes(s.category.toLowerCase()));
 
   // FAQ list for process methodology section
-  const processFaqs = [
+  const processFaqs = portfolio.faqs || [
     {
       q: "How does the ESG Audit Automation System reduce anomalies by 40%?",
       a: "By transferring manually validated checklists into integrated Excel verification engines powered by dynamic logic formulas. This establishes hard programmatic safeguards that catch misaligned columns, incorrect data types, and micro-discrepancies instantly before submission."
@@ -74,6 +79,13 @@ export default function ProfessionalView({
       q: "Why is the Corporate BRSR standard critical for Indian Tier 1 operations?",
       a: "BRSR establishes mandatory, granular ESG disclosures. Standardizing these reports into clear Excel architectures lets global investment firms assess and compare companies on equal parameters, avoiding 'greenwashing' risks."
     }
+  ];
+
+  const bannerStats = portfolio.bannerStats || [
+    { value: '5K+', label: 'Corporate Profiles Vetted' },
+    { value: '40%', label: 'Evaluation Discrepancy Reduction' },
+    { value: '4 / 4', label: 'Perfect ISO 14001 Audits' },
+    { value: '7+ Yrs', label: 'Process Systems Experience' }
   ];
 
   return (
@@ -91,7 +103,7 @@ export default function ProfessionalView({
             
             <div className="max-w-7xl mx-auto relative z-10">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-mono font-semibold uppercase tracking-wider bg-[#0b0d0d] text-[#f5eded] border border-[#0b0d0d]">
-                Stewardship Portfolio & Resume
+                {portfolio.professionalHeroTag || "Stewardship Portfolio & Resume"}
               </span>
               <h1 className="mt-4 font-display text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-sage-950 max-w-4xl">
                 {portfolio.headline}
@@ -167,6 +179,20 @@ export default function ProfessionalView({
                               </a>
                             </div>
                           );
+                        } else if (block.type === 'link') {
+                          return (
+                            <div key={block.id} className="my-4">
+                              <a
+                                href={block.value}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center space-x-2 px-6 py-3 rounded-xl bg-sage-700 text-white font-display text-xs font-bold uppercase tracking-wider hover:bg-sage-800 transition-all shadow-sm hover:shadow-md"
+                              >
+                                <span>{block.name || "Learn More"}</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
+                            </div>
+                          );
                         }
                         return null;
                       })}
@@ -176,12 +202,7 @@ export default function ProfessionalView({
 
               {/* Banner quick metrics row */}
               <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                  { value: '5K+', label: 'Corporate Profiles Vetted' },
-                  { value: '40%', label: 'Evaluation Discrepancy Reduction' },
-                  { value: '4 / 4', label: 'Perfect ISO 14001 Audits' },
-                  { value: '7+ Yrs', label: 'Process Systems Experience' }
-                ].map((stat, idx) => (
+                {bannerStats.map((stat, idx) => (
                   <div key={idx} className="bg-white/80 backdrop-blur border border-sage-200 p-5 rounded-2xl shadow-sm">
                     <div className="font-display text-2xl lg:text-3xl font-bold text-sage-700">{stat.value}</div>
                     <div className="text-[10px] font-mono uppercase tracking-wider text-sage-800 mt-1">{stat.label}</div>
@@ -206,7 +227,7 @@ export default function ProfessionalView({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {EXPERIENCE_MILESTONES.map((milestone) => (
+              {currentMilestones.map((milestone) => (
                 <div
                   key={milestone.id}
                   id={`stewardship-company-card-${milestone.id}`}
@@ -314,7 +335,7 @@ export default function ProfessionalView({
 
             {/* HIGH-CONTRAST SEGMENTED TABS REGION FOR CORPORATES */}
             <div className="flex flex-wrap gap-2.5 mb-8 bg-sage-100 p-1.5 rounded-2xl max-w-2xl border border-sage-200/40">
-              {EXPERIENCE_MILESTONES.map((milestone) => {
+              {currentMilestones.map((milestone) => {
                 const isActive = selectedMilestoneId === milestone.id;
                 return (
                   <button
@@ -438,7 +459,7 @@ export default function ProfessionalView({
 
           {/* Interactive Compliance & Quality metrics cards grid */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            {ESG_METRICS_INFO.map((metric) => (
+            {currentEsgMetrics.map((metric) => (
               <div key={metric.id} className="bg-white border border-sage-200 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                 <div className="flex justify-between items-start mb-3">
                   <span className={`px-2 py-0.5 rounded text-[8px] font-mono tracking-wider uppercase font-semibold border ${
@@ -490,31 +511,27 @@ export default function ProfessionalView({
               <div className="flex items-center space-x-2 pb-2 border-b border-sage-200/60 mb-6">
                 <Settings className="w-5 h-5 text-sage-700" />
                 <h2 className="font-display text-lg font-bold tracking-tight text-sage-950">
-                  Methodology: Standardization & QA Integration
+                  {portfolio.methodologyTitle || "Methodology: Standardization & QA Integration"}
                 </h2>
               </div>
 
               <div className="prose text-xs text-sage-800 space-y-4">
                 <p className="leading-relaxed">
-                  In both manufacturing environments (BorgWarner) and complex financial information networks (NSE, Sustainalytics), quality is not an afterthought&mdash;it is engineered into the system. Our proprietary framework uses a three-tier standardization matrix:
+                  {portfolio.methodologyDesc || "In both manufacturing environments (BorgWarner) and complex financial information networks (NSE, Sustainalytics), quality is not an afterthought—it is engineered into the system. Our proprietary framework uses a three-tier standardization matrix:"}
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-6">
-                  <div className="bg-sage-50 border border-sage-200 rounded-xl p-4">
-                    <span className="font-mono text-[9px] font-bold text-stone-500 uppercase block">Phase 1</span>
-                    <span className="font-display text-xs font-bold text-sage-950 block mt-1">Data Ingest Audit</span>
-                    <p className="text-[10px] text-sage-800 mt-1">Evaluating raw disclosures to isolate standard regulatory discrepancies immediately.</p>
-                  </div>
-                  <div className="bg-sage-100/50 border border-sage-200 rounded-xl p-4">
-                    <span className="font-mono text-[9px] font-bold text-stone-500 uppercase block">Phase 2</span>
-                    <span className="font-display text-xs font-bold text-sage-950 block mt-1">Algorithmic Filters</span>
-                    <p className="text-[10px] text-sage-800 mt-1">Using deep spreadsheet formula checkpoints to monitor material integrity flags.</p>
-                  </div>
-                  <div className="bg-sage-100 border border-sage-200 rounded-xl p-4">
-                    <span className="font-mono text-[9px] font-bold text-stone-500 uppercase block">Phase 3</span>
-                    <span className="font-display text-xs font-bold text-sage-950 block mt-1">SOP Vetting</span>
-                    <p className="text-[10px] text-sage-800 mt-1">Strict final peer-review and validation matrices ensuring absolute compliance output.</p>
-                  </div>
+                  {(portfolio.methodologyPhases || [
+                    { title: "Data Ingest Audit", desc: "Evaluating raw disclosures to isolate standard regulatory discrepancies immediately." },
+                    { title: "Algorithmic Filters", desc: "Using deep spreadsheet formula checkpoints to monitor material integrity flags." },
+                    { title: "SOP Vetting", desc: "Strict final peer-review and validation matrices ensuring absolute compliance output." }
+                  ]).map((phase, i) => (
+                    <div key={i} className="bg-sage-50 border border-sage-200 rounded-xl p-4">
+                      <span className="font-mono text-[9px] font-bold text-stone-500 uppercase block">Phase {i + 1}</span>
+                      <span className="font-display text-xs font-bold text-sage-950 block mt-1">{phase.title}</span>
+                      <p className="text-[10px] text-sage-800 mt-1">{phase.desc}</p>
+                    </div>
+                  ))}
                 </div>
 
                 <h3 className="font-display font-bold text-sm text-sage-950 pt-2">
@@ -547,17 +564,17 @@ export default function ProfessionalView({
               <div className="flex items-center space-x-2 pb-2 mb-6 border-b border-sage-200">
                 <Database className="w-5 h-5 text-sage-700" />
                 <h3 className="font-display text-sm font-bold tracking-tight text-sage-950">
-                  Data Audit Infrastructure
+                  {portfolio.infrastructureTitle || "Data Audit Infrastructure"}
                 </h3>
               </div>
 
               <div className="space-y-6">
-                {[
-                  { title: 'Excel Dynamic Matrix Modeling', percent: 98, color: 'bg-emerald-600', icon: FileSpreadsheet, desc: 'Advanced multidimensional arrays, recursive VBA algorithms, and high-fidelity scenario modeling trackers.' },
-                  { title: 'Regulatory Reporting Standards', percent: 92, color: 'bg-sage-800', icon: Layers, desc: 'Experienced in formal BRSR mandates, SASB materiality maps, standard CSR disclosures and GRI standards.' },
-                  { title: 'ISO Process Systems Management', percent: 90, color: 'bg-indigo-900', icon: Settings, desc: 'ISO 14001, ISO 9001, Six Sigma Green Belt root-cause-analyses, FMEA assembly grids.' }
-                ].map((item, idx) => {
-                  const Icon = item.icon;
+                {(portfolio.infrastructureItems || [
+                  { title: 'Excel Dynamic Matrix Modeling', percent: 98, color: 'bg-emerald-600', icon: 'FileSpreadsheet', desc: 'Advanced multidimensional arrays, recursive VBA algorithms, and high-fidelity scenario modeling trackers.' },
+                  { title: 'Regulatory Reporting Standards', percent: 92, color: 'bg-sage-800', icon: 'Layers', desc: 'Experienced in formal BRSR mandates, SASB materiality maps, standard CSR disclosures and GRI standards.' },
+                  { title: 'ISO Process Systems Management', percent: 90, color: 'bg-indigo-900', icon: 'Settings', desc: 'ISO 14001, ISO 9001, Six Sigma Green Belt root-cause-analyses, FMEA assembly grids.' }
+                ]).map((item, idx) => {
+                  const Icon = item.icon === 'FileSpreadsheet' ? FileSpreadsheet : (item.icon === 'Layers' ? Layers : Settings);
                   return (
                     <div key={idx} className="bg-sage-50/50 border border-sage-200/60 p-4 rounded-xl">
                       <div className="flex items-center space-x-3 mb-2">
@@ -667,7 +684,7 @@ export default function ProfessionalView({
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {CERTIFICATIONS_LIST.map((cert) => (
+              {currentCertifications.map((cert) => (
                 <div key={cert.id} className="bg-sage-50 border border-sage-200/60 p-5 rounded-2xl flex items-start gap-4">
                   <div className="p-3 bg-white rounded-xl border border-sage-200 flex-shrink-0 text-sage-700">
                     <Award className="w-5 h-5 text-sage-700" />

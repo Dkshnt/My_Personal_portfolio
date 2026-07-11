@@ -35,6 +35,7 @@ export interface ExcelProject {
   metrics: string[];
   docUrl?: string;
   sourceUrl?: string;
+  imageUrl?: string;
 }
 
 export interface ExperienceMilestone {
@@ -44,12 +45,15 @@ export interface ExperienceMilestone {
   period: string;
   location: string;
   logoColor: string; // Tailwind class background
+  shortCode?: string;
   keyMetric: string;
   keyMetricLabel: string;
   summary: string;
   responsibilities: string[];
   achievements: string[];
   toolsUsed: string[];
+  mediaUrl?: string;
+  attachmentUrl?: string;
 }
 
 export interface Certification {
@@ -252,7 +256,7 @@ export const IMMERSIVE_LAB_NODES = [
 
 export interface ContentBlock {
   id: string;
-  type: 'text' | 'image' | 'file_download';
+  type: 'text' | 'image' | 'file_download' | 'link';
   value: string;
   name?: string;
   sort_order: number;
@@ -266,5 +270,34 @@ export interface PortfolioData {
   youtube: string;
   assets?: { name: string; url: string; size: string; type: string; createdAt: string }[];
   blocks?: ContentBlock[];
+  milestones?: ExperienceMilestone[];
+  certifications?: Certification[];
+  esgMetrics?: ESGMetricInfo[];
+  projects?: ExcelProject[];
+  personalStats?: PersonalStat[];
+  labNodes?: any[];
+  skills?: { name: string; category: string; score: number; desc: string }[];
+  faqs?: { q: string; a: string }[];
+  youtubeStats?: { label: string; value: string }[];
+  jyotirlingas?: Jyotirlinga[];
+  bannerStats?: { label: string; value: string }[];
+  youtubeChannelName?: string;
+  youtubeDescription?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  location?: string;
+  footerName?: string;
+  methodologyTitle?: string;
+  methodologyDesc?: string;
+  methodologyPhases?: { title: string; desc: string }[];
+  infrastructureTitle?: string;
+  infrastructureItems?: { title: string; percent: number; color: string; icon: string; desc: string }[];
+  connectSubjects?: string[];
+  navProfessionalTitle?: string;
+  navPersonalTitle?: string;
+  professionalHeroTag?: string;
+  personalHeroTag?: string;
+  personalHeroTitle?: string;
+  personalHeroDesc?: string;
 }
 

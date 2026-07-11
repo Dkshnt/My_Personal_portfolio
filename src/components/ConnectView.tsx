@@ -50,7 +50,7 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
 
   // Clipboard copy
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('Dikshant9911@gmail.com');
+    navigator.clipboard.writeText(portfolio.contactEmail || 'Dikshant9911@gmail.com');
     setCopyStatus(true);
     setTimeout(() => setCopyStatus(false), 2000);
   };
@@ -71,7 +71,7 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
 
     // Simulated logging schedule
     setTimeout(() => {
-      setTerminalLogs(prev => [...prev, '>> RESOLVING MX record lookup for target inbox: Dikshant9911@gmail.com...']);
+      setTerminalLogs(prev => [...prev, `>> RESOLVING MX record lookup for target inbox: ${portfolio.contactEmail || 'Dikshant9911@gmail.com'}...`]);
     }, 400);
 
     setTimeout(() => {
@@ -151,7 +151,7 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
                     Global Electronic Mail
                   </span>
                   <p className="font-display font-bold text-lg mt-1 select-all">
-                    Dikshant9911@gmail.com
+                    {portfolio.contactEmail || 'Dikshant9911@gmail.com'}
                   </p>
                 </div>
                 
@@ -183,10 +183,10 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
                   Secure Voice Line
                 </span>
                 <a 
-                  href="tel:+919582776493" 
+                  href={`tel:${portfolio.contactPhone || '+919582776493'}`}
                   className="font-display font-bold text-lg mt-1 block hover:underline"
                 >
-                  +91 9582776493
+                  {portfolio.contactPhone || '+91 9582776493'}
                 </a>
               </div>
               <div className="flex items-center space-x-2 mt-4 text-[10px] font-mono text-neutral-400">
@@ -216,7 +216,7 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
                     Primary Station Location
                   </span>
                   <p className="font-display font-bold text-base mt-0.5 text-neutral-100">
-                    New Delhi, India
+                    {portfolio.location || 'New Delhi, India'}
                   </p>
                   
                   {/* Digital Clock */}
@@ -359,11 +359,15 @@ export default function ConnectView({ mode, portfolio }: ConnectViewProps) {
                           : 'bg-obsidian-950 border-neutral-850 text-neutral-100 focus:ring-teal-400 focus:border-teal-400'
                       }`}
                     >
-                      <option value="Brief Professional Inquiry">Brief Professional Inquiry</option>
-                      <option value="ESG Benchmarking Partnership">ESG Benchmarking Partnership</option>
-                      <option value="ISO Advisory Audit Request">ISO Advisory Audit Request</option>
-                      <option value="Excel/VBA Financial Scripting">Excel/VBA Financial Scripting</option>
-                      <option value="Uncovrd Minds Media Project">Uncovrd Minds Media Project</option>
+                      {(portfolio.connectSubjects || [
+                        "Brief Professional Inquiry",
+                        "ESG Benchmarking Partnership",
+                        "ISO Advisory Audit Request",
+                        "Excel/VBA Financial Scripting",
+                        "Uncovrd Minds Media Project"
+                      ]).map((subj, i) => (
+                        <option key={i} value={subj}>{subj}</option>
+                      ))}
                     </select>
                   </div>
 
