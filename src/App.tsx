@@ -121,6 +121,8 @@ export default function App() {
               <span>Standard Compliance: Verified</span>
               <span>&bull;</span>
               <span>Host Port: 3000 Secured</span>
+              <span>&bull;</span>
+              <a href="/admin" id="footer-admin-link" className="hover:underline hover:text-neutral-300">Admin Control Portal</a>
             </div>
           </div>
         </div>

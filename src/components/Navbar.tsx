@@ -136,6 +136,20 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
                 )}
               </span>
             </button>
+
+            {/* Admin Control Link */}
+            <a
+              id="admin-button"
+              href="/admin"
+              className={`flex items-center justify-center w-9 h-9 rounded-full border transition-all ${
+                isProd
+                  ? 'border-sage-200 text-sage-700 hover:bg-sage-100 hover:text-sage-950 bg-white shadow-sm'
+                  : 'border-neutral-800 text-neutral-400 hover:bg-neutral-800 hover:text-white bg-obsidian-900 shadow-md'
+              }`}
+              title="Admin Control Module"
+            >
+              <ShieldCheck className="w-4 h-4" />
+            </a>
           </div>
 
         </div>
