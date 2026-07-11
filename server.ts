@@ -26,7 +26,7 @@ const defaultPortfolio = {
     {
       id: "block_1",
       type: "text",
-      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process sa[...]
+      value: "Welcome to my dynamic ESG & Stewardship Portfolio. This section renders elements loaded straight from our content blocks array in the database. I bridge technical rigor in process safety engineering with high-fidelity ESG research and system audit standards.",
       sort_order: 10
     },
     {
@@ -39,7 +39,7 @@ const defaultPortfolio = {
     {
       id: "block_3",
       type: "text",
-      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) [...]
+      value: "My core methodology focuses on transferring manual checklists into highly automated audit models, cutting anomalies by 40%. Deploying standard frameworks (BRSR, ISO 14001, ISO 9001) keeps organizational risk strictly mitigated.",
       sort_order: 30
     },
     {
@@ -79,6 +79,10 @@ function readDb() {
 // Helper to write database
 function writeDb(data: typeof defaultPortfolio) {
   try {
+    if (process.env.VERCEL) {
+      console.warn("Write attempted in Vercel environment. Persistence skipped.");
+      return true;
+    }
     fs.mkdirSync(path.dirname(dbPath), { recursive: true });
     fs.writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf8");
     return true;
@@ -195,6 +199,11 @@ app.post("/api/upload", (req, res) => {
   }
 
   try {
+    if (process.env.VERCEL) {
+      res.status(403).json({ error: "Local uploads not supported on Vercel." });
+      return;
+    }
+
     const cleanBase64 = base64Data.replace(/^data:.*?;base64,/, "");
     const buffer = Buffer.from(cleanBase64, "base64");
 
@@ -262,6 +271,11 @@ app.delete("/api/assets", (req, res) => {
   }
 
   try {
+    if (process.env.VERCEL) {
+      res.status(403).json({ error: "Deleting assets not supported on Vercel." });
+      return;
+    }
+
     const currentDb = readDb();
     if (currentDb.assets) {
       const assetToDelete = currentDb.assets.find((a: any) => a.url === url);
@@ -287,6 +301,8 @@ app.delete("/api/assets", (req, res) => {
   }
 });
 
+export default app;
+
 // Setup Vite Dev server or Serve production assets
 async function startViteServer() {
   if (process.env.NODE_ENV !== "production") {
@@ -302,7 +318,17 @@ async function startViteServer() {
 
   // SPA fallback: serve index.html for all non-API routes
   app.get("*", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "index.html"));
+    if (req.path.startsWith("/api/")) {
+      res.status(404).json({ error: `API endpoint ${req.originalUrl} not found` });
+      return;
+    }
+    const distPath = path.join(process.cwd(), "dist");
+    const indexPath = path.join(distPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.sendFile(path.join(process.cwd(), "index.html"));
+    }
   });
 
   app.listen(PORT, "0.0.0.0", () => {
@@ -310,4 +336,6 @@ async function startViteServer() {
   });
 }
 
-startViteServer();
+if (!process.env.VERCEL) {
+  startViteServer();
+}

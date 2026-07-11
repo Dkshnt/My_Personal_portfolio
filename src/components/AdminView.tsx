@@ -6,9 +6,10 @@ interface AdminViewProps {
   mode: 'professional' | 'personal';
   portfolio: PortfolioData;
   onRefresh: () => void;
+  onClose?: () => void;
 }
 
-export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps) {
+export default function AdminView({ mode, portfolio, onRefresh, onClose }: AdminViewProps) {
   const isProd = mode === 'professional';
 
   // Auth States
@@ -377,7 +378,10 @@ export default function AdminView({ mode, portfolio, onRefresh }: AdminViewProps
         {/* Invisible back link trigger for normal users */}
         <div className="mb-6 flex justify-between items-center">
           <button 
-            onClick={() => window.location.href = '/'}
+            onClick={() => {
+              if (onClose) onClose();
+              else window.location.href = '/';
+            }}
             className={`flex items-center space-x-1 font-mono text-[10px] tracking-widest uppercase hover:underline ${
               isProd ? 'text-sage-700' : 'text-teal-400'
             }`}
