@@ -28,11 +28,14 @@ import {
   RotateCcw
 } from 'lucide-react';
 
+import { PortfolioData } from '../types';
+
 interface PersonalViewProps {
   activeTab: string;
+  portfolio?: PortfolioData;
 }
 
-export default function PersonalView({ activeTab }: PersonalViewProps) {
+export default function PersonalView({ activeTab, portfolio }: PersonalViewProps) {
   // Persistence of Jyotirlingas visited status using localStorage
   const [jyotirlingas, setJyotirlingas] = useState<Jyotirlinga[]>(() => {
     const cached = localStorage.getItem('jyotirlingas_progress');

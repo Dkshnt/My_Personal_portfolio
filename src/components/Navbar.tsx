@@ -1,13 +1,16 @@
 import { Sun, Moon, Briefcase, User, Mail, Compass, ShieldCheck, Lock } from 'lucide-react';
+import { PortfolioData } from '../types';
 
 interface NavbarProps {
   mode: 'professional' | 'personal';
   setMode: (mode: 'professional' | 'personal') => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  portfolio: PortfolioData;
+  setShowAdmin: (show: boolean) => void;
 }
 
-export default function Navbar({ mode, setMode, activeTab, setActiveTab }: NavbarProps) {
+export default function Navbar({ mode, setMode, activeTab, setActiveTab, portfolio, setShowAdmin }: NavbarProps) {
   const isProd = mode === 'professional';
 
   // Available tabs depends on the mode
@@ -138,10 +141,10 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
             </button>
 
             {/* Admin Access Button */}
-            <a
-              href="/admin"
+            <button
               id="admin-button"
-              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
+              onClick={() => setShowAdmin(true)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold tracking-wide uppercase transition-all duration-200 cursor-pointer ${
                 isProd 
                   ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
                   : 'bg-red-950 text-red-200 hover:bg-red-900'
@@ -150,7 +153,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
             >
               <Lock className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Admin</span>
-            </a>
+            </button>
           </div>
 
         </div>
@@ -196,10 +199,10 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
               Connect
             </span>
           </button>
-          <a
-            href="/admin"
+          <button
             id="nav-mobile-admin-button"
-            className={`flex flex-col items-center space-y-1 py-1 px-3 rounded-md transition-all ${
+            onClick={() => setShowAdmin(true)}
+            className={`flex flex-col items-center space-y-1 py-1 px-3 rounded-md transition-all cursor-pointer ${
               isProd 
                 ? 'text-amber-800 hover:text-amber-900' 
                 : 'text-red-400 hover:text-red-300'
@@ -210,7 +213,7 @@ export default function Navbar({ mode, setMode, activeTab, setActiveTab }: Navba
             <span className="text-[9px] uppercase tracking-wider font-semibold font-display">
               Admin
             </span>
-          </a>
+          </button>
         </div>
 
       </div>
